@@ -1,0 +1,17 @@
+
+import logo from '../logo.svg';
+
+export const NavBar = () => {
+  return (
+      <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            <img src={logo} alt="Bootstrap" width="35" height="35" />
+          </a>
+          <div className="d-flex">
+            <img className="rounded-circle" src="https://i.ibb.co/gM2gvcN2/1686859128874.jpg"  width="35" height="35"/>
+          </div>
+        </div>
+      </nav>
+  );
+}
