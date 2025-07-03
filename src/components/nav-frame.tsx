@@ -1,64 +1,103 @@
-type NavFrameProps = {
-    collapsed: boolean;
+import { useEffect, useState } from "react";
+import { sessionManager } from "../utils/session-manager";
+import logo from '../logo.svg'
+import { ContentOpts } from "../common/types";
+
+interface NavFrameProps {
+    set_content: React.Dispatch<React.SetStateAction<ContentOpts>>;
 };
 
+interface Navigation {
+    name: string,
+    value: ContentOpts,
+    icon: string,
+    submenus: Navigation[] | null,
+    accessible: boolean,
+    order: number,
+}
 
-export const NavFrame = () => {
+export const NavFrame = (props:NavFrameProps) => {
+    const [navigation, setNavigation] = useState<Navigation[]>([
+        { name: 'Home', value: 'home', icon: 'test', submenus: null, accessible: false, order: 100 },
+        { name: 'Requests', value: 'requests', icon: 'test', submenus: null, accessible: false, order: 200 },
+        { name: 'People', value: 'people', icon: 'test', submenus: null, accessible: false, order: 300 },
+        { name: 'Knowledge', value: 'knowledge', icon: 'test', submenus: null, accessible: false, order: 400 },
+        { name: 'Contacts', value: 'contacts', icon: 'test', submenus: null, accessible: false, order: 500 },
+    ])
+
+    useEffect(() => {
+        setNavigation(setUpNavigation())
+    }, []);
+
+    const setUpNavigation = (): Navigation[] => {
+        const updatedNavigation = navigation.map((item) => {
+            const updatedNavigation = { ...item };
+            const groups = sessionManager.getGroups();
+            switch (updatedNavigation.name) {
+                case 'requests':
+                    if (
+                        (groups.includes('chapter_manager')) ||
+                        groups.includes('fullfiller')
+                    ) {
+                        updatedNavigation.accessible = true;
+                    }
+                    break;
+                case 'people':
+                    if ((groups.includes('chapter_manager')) ||
+                        groups.includes('member_admin') ||
+                        groups.includes('exoneree_admin')
+                    ) {
+                        updatedNavigation.accessible = true;
+                    }
+                    break;
+                case 'knowledge':
+                    if (
+                        (groups.includes('chapter_manager')) ||
+                        groups.includes('knowledge_admin')
+                    ) {
+                        updatedNavigation.accessible = true;
+                    }
+                    break;
+                case 'contacts':
+                    if (
+                        (groups.includes('chapter_manager')) ||
+                        groups.includes('contact_admin')
+                    ) {
+                        updatedNavigation.accessible = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return updatedNavigation;
+        });
+        return updatedNavigation;
+    }
 
     return (
         <div className="d-flex flex-column justify-content-between" style={{ height: '100vh' }}>
             <div>
-                <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <svg className="bi pe-none me-2" width="40" height="32"></svg>
-                    <span className="fs-4">Sidebar</span>
+                <a className="pt-3 d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span className="fs-4"> <img src={logo} alt="Bootstrap" width="35" height="35" />Chapter Name</span>
                 </a>
                 <hr />
                 <ul className="nav nav-pills flex-column mb-auto">
-                    <li className="nav-item">
-                        <a href="#" className="nav-link active" aria-current="page">
-                            <svg className="bi pe-none me-2" width="16" height="16"></svg>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="nav-link text-white">
-                            <svg className="bi pe-none me-2" width="16" height="16"></svg>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="nav-link text-white">
-                            <svg className="bi pe-none me-2" width="16" height="16"></svg>
-                            Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="nav-link text-white">
-                            <svg className="bi pe-none me-2" width="16" height="16"></svg>
-                            Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="nav-link text-white">
-                            <svg className="bi pe-none me-2" width="16" height="16"></svg>
-                            Customers
-                        </a>
-                    </li>
+                    {navigation
+                        .sort((a, b) => a.order - b.order)
+                        .map((nav) => {
+                            return (
+                                <li key={nav.value} className="nav-item">
+                                    <a
+                                        className="nav-link d-flex justify-content-between align-items-center text-white"
+                                        role="button"
+                                        onClick={() => props.set_content(nav.value)}>
+                                        {nav.name}
+                                    </a>
+                                </li>
+                            )
+                        })}
                 </ul>
                 <hr />
-            </div>
-            <div className="dropdown mb-2">
-                <a href="#" className="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2" />
-                    <strong>Profile</strong>
-                </a>
-                <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
-                    <li><a className="dropdown-item" href="#">New project...</a></li>
-                    <li><a className="dropdown-item" href="#">Settings</a></li>
-                    <li><a className="dropdown-item" href="#">Profile</a></li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item" href="#">Sign out</a></li>
-                </ul>
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-export {}; 
+export { };
 
 class SessionManager {
   private key = 'session';
@@ -24,8 +24,16 @@ class SessionManager {
     return this.getSession()?.token || null;
   }
 
+  getChapterID():string | null{
+    return this.getSession()?.chapter_data?.chapter?.chapter_reltn
+  }
+
   getUser(): Record<string, any> | null {
     return this.getSession()?.user || null;
+  }
+
+  getGroups(): string[] {
+    return this.getSession()?.user?.groups || []
   }
 
   setSession(data: Record<string, any>) {

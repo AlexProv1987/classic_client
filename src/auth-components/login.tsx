@@ -1,12 +1,12 @@
 import { useState } from "react"
 import { axiosBaseURL } from "../https"
-import { Session } from "../common/types";
+import { Session } from "../common/interfaces";
 
-type LoginProps = {
+interface LoginProps {
     set_has_token: React.Dispatch<React.SetStateAction<Session | null>>;
 }
 
-type LoginForm = {
+interface LoginForm {
     username: string,
     password: string,
 }

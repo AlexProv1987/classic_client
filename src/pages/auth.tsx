@@ -2,9 +2,9 @@ import { useState } from "react"
 import { LogIn } from "../auth-components/login"
 import { ForgotPassword } from "../auth-components/forgot-pw"
 import { SignUp } from "../auth-components/sign-up"
-import { Session } from "../common/types"
+import { Session } from "../common/interfaces"
 
-type AuthPageProps = {
+interface AuthPageProps {
     set_has_token:React.Dispatch<React.SetStateAction<Session | null>>;
 }
 

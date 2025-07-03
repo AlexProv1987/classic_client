@@ -4,7 +4,7 @@ import { Footer } from './components/footer';
 import { Main } from './pages/main';
 import { useSessionState } from './hooks';
 import { AuthPage } from './pages/auth';
-import { Session } from './common/types';
+import { Session } from './common/interfaces';
 
 function App() {
   const [user, setUser] = useSessionState<Session | null>('session', null);

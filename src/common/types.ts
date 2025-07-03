@@ -1,3 +1,1 @@
-export type Session = {
-  [key: string]: any;
-};
+export type ContentOpts = 'home' | 'requests' | 'people' | 'knowledge' | 'contacts'
