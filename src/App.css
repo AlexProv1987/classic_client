@@ -113,3 +113,17 @@ html, body, #root {
     /* Adjust bounce height */
   }
 }
+
+.fab-button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fab-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(26, 115, 232, 0.4);
+}
+
+.fab-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+}

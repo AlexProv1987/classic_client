@@ -5,6 +5,7 @@ import { Main } from './pages/main';
 import { useSessionState } from './hooks';
 import { AuthPage } from './pages/auth';
 import { Session } from './common/interfaces';
+import { GetSupport } from './components/fab';
 
 function App() {
   const [user, setUser] = useSessionState<Session | null>('session', null);
@@ -18,6 +19,10 @@ function App() {
       padding: 0,
       margin: 0,
     }}>
+      
+      {/*Fab*/}
+      {user && <GetSupport />}
+
       {/**Nav Bar**/}
       <NavBar />
 
