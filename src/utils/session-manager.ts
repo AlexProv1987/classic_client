@@ -28,6 +28,10 @@ class SessionManager {
     return this.getSession()?.chapter_data?.chapter?.chapter_reltn
   }
 
+  getMemberID():string | null{
+    return this.getSession()?.chapter_data?.chapter?.id
+  }
+
   getUser(): Record<string, any> | null {
     return this.getSession()?.user || null;
   }
