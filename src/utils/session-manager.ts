@@ -5,8 +5,9 @@ class SessionManager {
   private _session: Record<string, any> | null = null;
 
   //lazy load since this instance is created when our app loads and before session creation
+  //this should always exist post login but just in case
   private loadSession() {
-    if (this._session !== null) return; // already loaded
+    if (this._session !== null) return;
     try {
       const raw = sessionStorage.getItem(this.key);
       this._session = raw ? JSON.parse(raw) : null;
@@ -24,11 +25,11 @@ class SessionManager {
     return this.getSession()?.token || null;
   }
 
-  getChapterID():string | null{
+  getChapterID(): string | null {
     return this.getSession()?.chapter_data?.chapter?.chapter_reltn
   }
 
-  getMemberID():string | null{
+  getMemberID(): string | null {
     return this.getSession()?.chapter_data?.chapter?.id
   }
 
@@ -40,9 +41,12 @@ class SessionManager {
     return this.getSession()?.user?.groups || []
   }
 
+  hasSession(): boolean {
+    return !!this.getToken();
+  }
+  
   setSession(data: Record<string, any>) {
     this._session = data;
-    sessionStorage.setItem(this.key, JSON.stringify(data));
   }
 
   clear() {
@@ -50,9 +54,6 @@ class SessionManager {
     sessionStorage.removeItem(this.key);
   }
 
-  hasSession(): boolean {
-    return !!this.getToken();
-  }
 }
 
 

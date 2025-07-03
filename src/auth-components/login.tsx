@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { axiosBaseURL } from "../https"
 import { Session } from "../common/interfaces";
+import { sessionManager } from "../utils/session-manager";
 
 interface LoginProps {
     set_has_token: React.Dispatch<React.SetStateAction<Session | null>>;
@@ -47,6 +48,7 @@ export const LogIn = (props: LoginProps) => {
                 username: formObj.username.trim(),
                 password: formObj.password.trim(),
             }).then(function (response) {
+                sessionManager.setSession(response.data)
                 props.set_has_token(response.data)   
             }).catch(function (error) {
                 console.error('Login Failed')

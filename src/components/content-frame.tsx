@@ -8,10 +8,7 @@ interface ContentFrameProps {
 }
 
 export const ContentFrame = (props: ContentFrameProps) => {
-    useEffect(() => {
-        console.log(props.value)
-    }, [props.value]);
-
+    
     const renderView = () => {
         switch (props.value) {
             case 'home':
