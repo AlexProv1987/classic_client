@@ -26,7 +26,6 @@ export const RecordNotes = (props: RecordNotesProps) => {
     const currentNotes = notes?.slice(startIndex, endIndex) || [];
 
     useEffect(() => {
-
         axiosBaseURL
             .get(`request_api/request_notes/get_request_notes/?request_id=${props.record_id}`, getConfig())
             .then((response) => {
@@ -62,6 +61,7 @@ export const RecordNotes = (props: RecordNotesProps) => {
     const prevPage = () => {
         if (currentPage > 1) setCurrentPage(prev => prev - 1);
     };
+
     return (
         <Container className="mb-4" style={{ minHeight: '80vh' }}>
             {alertMsg &&
