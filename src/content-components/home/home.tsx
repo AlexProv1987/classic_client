@@ -35,7 +35,7 @@ export const Home = () => {
                 style={{ border: 'none', width: '100%', height: '100vh',}}
                 srcDoc={homeContent} />
             ) : (
-                !alertMsg && <BouncingDotsLoader />
+                !alertMsg && <BouncingDotsLoader vh='50' />
             )}
         </div>
     )

@@ -1,8 +1,11 @@
 import './css/bouncing-loader.css'
-export const BouncingDotsLoader = () => {
+interface LoaderProps{
+    vh:string,
+}
+export const BouncingDotsLoader = (props:LoaderProps) => {
     return (
         <div className='container' style={{
-            minHeight: '50vh', 
+            minHeight: props.vh ? props.vh : '50vh', 
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',

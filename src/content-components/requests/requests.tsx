@@ -18,7 +18,6 @@ export const Requests = () => {
         axiosBaseURL
             .get(`request_api/requests/${getURLParam()}`, getConfig())
             .then((response) => {
-                console.log(response.data)
                 setRequestObjArr(sortRequests(response.data));
             })
             .catch((error) => {

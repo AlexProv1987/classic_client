@@ -32,4 +32,5 @@ export interface RequestNote {
     note_type: string;
     get_note_type_display:string;
     note_text: string;
+    created:string,
 }
