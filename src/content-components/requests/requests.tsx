@@ -68,14 +68,15 @@ export const Requests = () => {
                 bVal = b.fullfiller
                     ? `${b.fullfiller.user_first_name} ${b.fullfiller.user_last_name}`.toLowerCase()
                     : '';
+            //i may have fk'd this one up...once I get to a new day need to see if it sorts right
             } else if (key === 'updated') {
                 aVal = new Date(a.updated).getTime();
                 bVal = new Date(b.updated).getTime();
-            } else {
+            }
+            else {
                 aVal = (a[key] || '').toString().toLowerCase();
                 bVal = (b[key] || '').toString().toLowerCase();
             }
-
             if (aVal < bVal) return direction === 'asc' ? -1 : 1;
             if (aVal > bVal) return direction === 'asc' ? 1 : -1;
             return 0;

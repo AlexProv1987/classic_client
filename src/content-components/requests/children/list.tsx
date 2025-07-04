@@ -33,6 +33,9 @@ export const RequestList = (props: RequestListProps) => {
                         <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('updated')}>
                             Updated {props.sort_config?.key === 'updated' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
                         </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('created')}>
+                            Created {props.sort_config?.key === 'created' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +57,10 @@ export const RequestList = (props: RequestListProps) => {
                                 <td>{record.get_status_display || 'Pending'}</td>
                                 <td> {(() => {
                                     const [year, month, day] = record.updated.split('T')[0].split('-');
+                                    return `${parseInt(month)}/${parseInt(day)}/${year}`;
+                                })()}</td>
+                                <td> {(() => {
+                                    const [year, month, day] = record.created.split('T')[0].split('-');
                                     return `${parseInt(month)}/${parseInt(day)}/${year}`;
                                 })()}</td>
                             </tr>
