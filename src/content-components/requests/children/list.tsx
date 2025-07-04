@@ -8,7 +8,6 @@ interface RequestListProps {
     set_record: React.Dispatch<React.SetStateAction<RequestObject | null>>,
 }
 export const RequestList = (props: RequestListProps) => {
-    console.log(props.records)
     return (
         <>
              <Table striped bordered hover responsive="sm">
