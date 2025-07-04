@@ -18,13 +18,15 @@ interface SortConfig {
 }
 
 export const Requests = () => {
-
+    //state vars
+    const [currentPage, setCurrentPage] = useState(1);
     const [requestObjArr, setRequestObjArr] = useState<RequestObject[]>([]);
     const [filterType, setFilterType] = useState<FilterType>('all');
     const [selectedItem, setSelectedItem] = useState<RequestObject | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [sortConfig, setSortConfig] = useState<{ key: keyof RequestObject; direction: 'asc' | 'desc' } | null>(null);
 
+    //initial hook to make request
     useEffect(() => {
         axiosBaseURL
             .get(`request_api/requests/${getURLParam()}`, getConfig())
@@ -36,6 +38,7 @@ export const Requests = () => {
             })
     }, []);
 
+    //call sortRequestObjArr when sortConfig updates
     useEffect(() => {
         setRequestObjArr(prev => sortRequests(prev));
     }, [sortConfig]);
@@ -48,12 +51,19 @@ export const Requests = () => {
         }
     }
 
+
+    //function for sorting based on a key from the requestobject or combined vals - if you need more of these add another | string to the SortableRequestField type
     const sortRequests = (requests: RequestObject[]): RequestObject[] => {
+        //if nothing is sorted return the OG 
         if (!sortConfig) return requests;
 
+        //get the config
         const { key, direction } = sortConfig;
+        //copy to leave og alone
         const sorted = [...requests];
+        
 
+        //decide what we are sorting on and how and do it
         sorted.sort((a, b) => {
             let aVal: string | number = '';
             let bVal: string | number = '';
@@ -85,6 +95,8 @@ export const Requests = () => {
         return sorted;
     };
 
+
+    //sort config updating to handle re render
     const handleColumnSort = (key: SortableRequestField) => {
         setSortConfig((prev) => {
             if (prev?.key === key) {
@@ -94,6 +106,7 @@ export const Requests = () => {
         });
     };
 
+    //string filter && assigned v unassigned v open
     const filteredRequests = requestObjArr
         .filter((request) => {
             if (searchQuery.length >= 3) {
@@ -116,6 +129,13 @@ export const Requests = () => {
             return true;
         });
 
+    //pagination
+    const pageSize = 25;
+    const paginatedRequests = filteredRequests.slice(
+        (currentPage - 1) * pageSize,
+        currentPage * pageSize
+    );
+
     return (
         <div>
             {!selectedItem ? (
@@ -125,10 +145,14 @@ export const Requests = () => {
                         search_setter={setSearchQuery}
                     />
                     <RequestList
-                        records={filteredRequests}
+                        records={paginatedRequests}
                         set_record={setSelectedItem}
                         on_sort={handleColumnSort}
                         sort_config={sortConfig}
+                        page={currentPage}
+                        total={filteredRequests.length}
+                        page_size={pageSize}
+                        set_page={setCurrentPage}
                     />
                 </>
             ) : (

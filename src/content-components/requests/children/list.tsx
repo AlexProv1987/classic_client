@@ -10,6 +10,10 @@ interface RequestListProps {
         key: keyof RequestObject;
         direction: 'asc' | 'desc';
     } | null;
+    page: number;
+    total: number;
+    page_size: number;
+    set_page: React.Dispatch<React.SetStateAction<number>>;
 }
 export const RequestList = (props: RequestListProps) => {
     return (
@@ -68,16 +72,32 @@ export const RequestList = (props: RequestListProps) => {
                     )}
                 </tbody>
             </Table>
-
             <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
                 <Tippy content="Previous Page" delay={[250, 100]} placement="bottom">
-                    <ArrowLeftCircle className="icon-no-outline" size={30} style={{ cursor: 'pointer', }} onClick={() => { }} />
+                    <ArrowLeftCircle
+                        className="icon-no-outline"
+                        size={30}
+                        style={{ cursor: props.page > 1 ? 'pointer' : 'not-allowed', opacity: props.page > 1 ? 1 : 0.5 }}
+                        onClick={() => {
+                            if (props.page > 1) props.set_page(props.page - 1);
+                        }}
+                    />
                 </Tippy>
                 <span className="text-muted small">
-                    {`${1} - ${20} of ${200}`}
+                    {`${(props.page - 1) * props.page_size + 1} - ${Math.min(props.page * props.page_size, props.total)} of ${props.total}`}
                 </span>
                 <Tippy content="Next Page" delay={[250, 100]} placement="bottom">
-                    <ArrowRightCircle className="icon-no-outline" size={30} style={{ cursor: 'pointer' }} onClick={() => { }} />
+                    <ArrowRightCircle
+                        className="icon-no-outline"
+                        size={30}
+                        style={{
+                            cursor: props.page * props.page_size < props.total ? 'pointer' : 'not-allowed',
+                            opacity: props.page * props.page_size < props.total ? 1 : 0.5,
+                        }}
+                        onClick={() => {
+                            if (props.page * props.page_size < props.total) props.set_page(props.page + 1);
+                        }}
+                    />
                 </Tippy>
             </div>
         </>
