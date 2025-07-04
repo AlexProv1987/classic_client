@@ -3,10 +3,13 @@ export interface UserReltn {
     last_name: string;
     phone_number:string;
 }
-  
+
 export interface Fullfiller {
     id:string;
-    member: Member;
+    fullfilemt_role_type:string,
+    fullfillment_role:string,
+    user_first_name:string,
+    user_last_name:string,
    [key: string]: any;
 }
   
@@ -14,14 +17,19 @@ export interface Member {
     user_first_name: string;
     user_last_name: string;
 }
-  
+
+export interface Status {
+    name:string,
+    value:string,
+}
+
 export interface RequestObject {
     id: string;
     request_type: string;
     description: string;
     exoneree_reltn: UserReltn;
     fullfiller: Fullfiller;
-    status: string;
+    status: Status;
     get_status_display:string;
     updated:string,
     //yolo land

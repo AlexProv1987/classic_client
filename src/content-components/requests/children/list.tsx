@@ -1,6 +1,6 @@
 import { ArrowLeftCircle, ArrowRightCircle, EyeFill, Eyeglasses } from "react-bootstrap-icons"
 import { RequestObject } from "../ts/interface"
-import { Container, Table } from "react-bootstrap"
+import { Table } from "react-bootstrap"
 import Tippy from "@tippyjs/react"
 
 interface RequestListProps {
@@ -8,6 +8,7 @@ interface RequestListProps {
     set_record: React.Dispatch<React.SetStateAction<RequestObject | null>>,
 }
 export const RequestList = (props: RequestListProps) => {
+    console.log(props.records)
     return (
         <>
              <Table striped bordered hover responsive="sm">
@@ -36,7 +37,7 @@ export const RequestList = (props: RequestListProps) => {
                                 </Tippy>
                                 <td>{record.request_type}</td>
                                 <td>{`${record.exoneree_reltn.first_name} ${record.exoneree_reltn.last_name}`}</td>
-                                <td>{record.assigned_to || '--None--'}</td>
+                                <td>{record.fullfiller && `${record.fullfiller.user_first_name} ${record.fullfiller.user_last_name}` || '--None--'}</td>
                                 <td>{record.get_status_display || 'Pending'}</td>
                                 <td> {(() => {
                                     const [year, month, day] = record.updated.split('T')[0].split('-');
