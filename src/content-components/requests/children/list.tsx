@@ -9,7 +9,7 @@ interface RequestListProps {
 }
 export const RequestList = (props: RequestListProps) => {
     return (
-        <div>
+        <>
              <Table striped bordered hover responsive="sm">
                 <thead>
                     <tr>
@@ -49,16 +49,16 @@ export const RequestList = (props: RequestListProps) => {
             </Table>
 
             <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
-                <Tippy content="Next Page" delay={[250, 100]} placement="bottom">
+                <Tippy content="Previous Page" delay={[250, 100]} placement="bottom">
                     <ArrowLeftCircle className="icon-no-outline" size={30} style={{ cursor: 'pointer',}} onClick={() => { }} />
                 </Tippy>
                 <span className="text-muted small">
                     {`${1} - ${20} of ${200}`}
                 </span>
-                <Tippy content="Previous Page" delay={[250, 100]} placement="bottom">
+                <Tippy content="Next Page" delay={[250, 100]} placement="bottom">
                     <ArrowRightCircle className="icon-no-outline" size={30} style={{ cursor: 'pointer' }} onClick={() => { }} />
                 </Tippy>
             </div>
-        </div>
+        </>
     )
 }

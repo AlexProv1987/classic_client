@@ -80,7 +80,7 @@ export const Requests = () => {
     return (
         <div>
             {!selectedItem ? (
-                <div>
+                <>
                     <ListRequestNav
                         filter_setter={setFilterType}
                         search_setter={setSearchQuery}
@@ -89,7 +89,7 @@ export const Requests = () => {
                         records={filteredRequests}
                         set_record={setSelectedItem}
                     />
-                </div>
+                </>
             ) : (
                 <RecordView 
                 set_selected={setSelectedItem}

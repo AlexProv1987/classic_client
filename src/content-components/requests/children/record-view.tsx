@@ -1,7 +1,7 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import { RequestObject } from "../ts/interface"
 import { RecordNav } from "./record-sub-nav"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { RecordNotes } from "./record-notes";
 
 interface RecordProps {
@@ -21,7 +21,8 @@ interface RecordFieldMap {
 export const RecordView = (props: RecordProps) => {
 
     const previous: RequestObject = props.current
-    console.log(props.current)
+    const [note, setNote] = useState<string>('')
+
     return (
         <div>
             <RecordNav
@@ -84,9 +85,9 @@ export const RecordView = (props: RecordProps) => {
                                 <Form.Control
                                     type="text"
                                     placeholder={(() => {
-                                    const [year, month, day] = props.current.created.split('T')[0].split('-');
-                                    return `${parseInt(month)}/${parseInt(day)}/${year}`;
-                                })()}
+                                        const [year, month, day] = props.current.created.split('T')[0].split('-');
+                                        return `${parseInt(month)}/${parseInt(day)}/${year}`;
+                                    })()}
                                     aria-label="Disabled input example"
                                     disabled
                                     readOnly
@@ -99,9 +100,9 @@ export const RecordView = (props: RecordProps) => {
                                 <Form.Control
                                     type="text"
                                     placeholder={(() => {
-                                    const [year, month, day] = props.current.updated.split('T')[0].split('-');
-                                    return `${parseInt(month)}/${parseInt(day)}/${year}`;
-                                })()}
+                                        const [year, month, day] = props.current.updated.split('T')[0].split('-');
+                                        return `${parseInt(month)}/${parseInt(day)}/${year}`;
+                                    })()}
                                     aria-label="Disabled input example"
                                     disabled
                                     readOnly
@@ -111,9 +112,11 @@ export const RecordView = (props: RecordProps) => {
                     </Row>
                 </Form>
             </Container>
-            <RecordNotes 
-            record_type="request"
-            record_id={props.current.id}
+            <RecordNotes
+                record_type="request"
+                record_id={props.current.id}
+                note={note}
+                note_setter={setNote}
             />
         </div>
     )
