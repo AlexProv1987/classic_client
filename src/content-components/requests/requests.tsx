@@ -7,12 +7,23 @@ import { RecordView } from "./children/record-view";
 import { ListRequestNav } from "./children/list-sub-nav";
 import { FilterType } from "./ts/type";
 
+type SortableRequestField =
+    | keyof RequestObject
+    | 'exoneree_name'
+    | 'fullfiller_name';
+
+interface SortConfig {
+    key: SortableRequestField;
+    direction: 'asc' | 'desc';
+}
+
 export const Requests = () => {
 
     const [requestObjArr, setRequestObjArr] = useState<RequestObject[]>([]);
     const [filterType, setFilterType] = useState<FilterType>('all');
     const [selectedItem, setSelectedItem] = useState<RequestObject | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const [sortConfig, setSortConfig] = useState<{ key: keyof RequestObject; direction: 'asc' | 'desc' } | null>(null);
 
     useEffect(() => {
         axiosBaseURL
@@ -25,44 +36,71 @@ export const Requests = () => {
             })
     }, []);
 
+    useEffect(() => {
+        setRequestObjArr(prev => sortRequests(prev));
+    }, [sortConfig]);
+
     const getURLParam = (): string => {
-        const groups = sessionManager.getGroups()
-        let urlParm;
-        if (groups.includes('chapter_manager')) {
-            urlParm = `chapter_requests/?chapter_id=${sessionManager.getChapterID()}`;
+        if (sessionManager.getGroups().includes('chapter_manager')) {
+            return `chapter_requests/?chapter_id=${sessionManager.getChapterID()}`;
         } else {
-            urlParm = `fullfiller_requests/?chapter_id=${sessionManager.getChapterID()}&member_id=${sessionManager.getMemberID()}`;
+            return `fullfiller_requests/?chapter_id=${sessionManager.getChapterID()}&member_id=${sessionManager.getMemberID()}`;
         }
-        return urlParm
     }
 
     const sortRequests = (requests: RequestObject[]): RequestObject[] => {
-        return requests.sort((a, b) => {
-            const dateA = new Date(a.updated).getTime();
-            const dateB = new Date(b.updated).getTime();
-            return dateB - dateA;
+        if (!sortConfig) return requests;
+
+        const { key, direction } = sortConfig;
+        const sorted = [...requests];
+
+        sorted.sort((a, b) => {
+            let aVal: string | number = '';
+            let bVal: string | number = '';
+
+            if (key === 'exoneree_name') {
+                aVal = `${a.exoneree_reltn.first_name} ${a.exoneree_reltn.last_name}`.toLowerCase();
+                bVal = `${b.exoneree_reltn.first_name} ${b.exoneree_reltn.last_name}`.toLowerCase();
+            } else if (key === 'fullfiller_name') {
+                aVal = a.fullfiller
+                    ? `${a.fullfiller.user_first_name} ${a.fullfiller.user_last_name}`.toLowerCase()
+                    : '';
+                bVal = b.fullfiller
+                    ? `${b.fullfiller.user_first_name} ${b.fullfiller.user_last_name}`.toLowerCase()
+                    : '';
+            } else if (key === 'updated') {
+                aVal = new Date(a.updated).getTime();
+                bVal = new Date(b.updated).getTime();
+            } else {
+                aVal = (a[key] || '').toString().toLowerCase();
+                bVal = (b[key] || '').toString().toLowerCase();
+            }
+
+            if (aVal < bVal) return direction === 'asc' ? -1 : 1;
+            if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        return sorted;
+    };
+
+    const handleColumnSort = (key: SortableRequestField) => {
+        setSortConfig((prev) => {
+            if (prev?.key === key) {
+                return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+            }
+            return { key, direction: 'asc' };
         });
     };
 
-    const handleUpdateSort = (updatedRequest: RequestObject): void => {
-        setRequestObjArr((prevRequest) => {
-            const updatedRequests = prevRequest.map((request) =>
-                request.id === updatedRequest.id
-                    ? { ...request, ...updatedRequest }
-                    : request
-            );
-            const sortedRequests = sortRequests(updatedRequests);
-            return sortedRequests;
-        });
-    }
-
     const filteredRequests = requestObjArr
         .filter((request) => {
-            if (searchQuery.length >= 4) {
+            if (searchQuery.length >= 3) {
                 return (
                     request.request_type.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
                     request.exoneree_reltn.first_name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
                     request.exoneree_reltn.last_name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+                    request.get_status_display.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
                     (request.fullfiller &&
                         request.fullfiller.user_first_name.toLowerCase().startsWith(searchQuery.toLowerCase())) ||
                     (request.fullfiller &&
@@ -76,7 +114,7 @@ export const Requests = () => {
             if (filterType === 'without') return request.fullfiller === null;
             return true;
         });
-        
+
     return (
         <div>
             {!selectedItem ? (
@@ -88,12 +126,14 @@ export const Requests = () => {
                     <RequestList
                         records={filteredRequests}
                         set_record={setSelectedItem}
+                        on_sort={handleColumnSort}
+                        sort_config={sortConfig}
                     />
                 </>
             ) : (
-                <RecordView 
-                set_selected={setSelectedItem}
-                current={selectedItem}
+                <RecordView
+                    set_selected={setSelectedItem}
+                    current={selectedItem}
                 />
             )}
         </div>

@@ -2,23 +2,37 @@ import { ArrowLeftCircle, ArrowRightCircle, EyeFill, Eyeglasses } from "react-bo
 import { RequestObject } from "../ts/interface"
 import { Table } from "react-bootstrap"
 import Tippy from "@tippyjs/react"
-
 interface RequestListProps {
     records: RequestObject[]
     set_record: React.Dispatch<React.SetStateAction<RequestObject | null>>,
+    on_sort?: (key: keyof RequestObject) => void;
+    sort_config?: {
+        key: keyof RequestObject;
+        direction: 'asc' | 'desc';
+    } | null;
 }
 export const RequestList = (props: RequestListProps) => {
     return (
         <>
-             <Table striped bordered hover responsive="sm">
+            <Table striped bordered hover responsive="sm">
                 <thead>
                     <tr>
                         <th><Eyeglasses /></th>
-                        <th>Type</th>
-                        <th>Requested For</th>
-                        <th>Assignee</th>
-                        <th>Status</th>
-                        <th>Updated</th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('request_type')}>
+                            Type {props.sort_config?.key === 'request_type' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                        </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('exoneree_name')}>
+                            Requested For {props.sort_config?.key === 'exoneree_name' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('fullfiller_name')}>
+                            Assignee {props.sort_config?.key === 'fullfiller_name' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
+                        </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('status')}>
+                            Status {props.sort_config?.key === 'status' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                        </th>
+                        <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('updated')}>
+                            Updated {props.sort_config?.key === 'updated' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,7 +46,7 @@ export const RequestList = (props: RequestListProps) => {
                         props.records.map((record) => (
                             <tr key={record.id}>
                                 <Tippy content="View" delay={[250, 100]} placement="bottom">
-                                <td onClick={() => props.set_record(record)} style={{ cursor: 'pointer' }}><EyeFill /></td>
+                                    <td onClick={() => props.set_record(record)} style={{ cursor: 'pointer' }}><EyeFill /></td>
                                 </Tippy>
                                 <td>{record.request_type}</td>
                                 <td>{`${record.exoneree_reltn.first_name} ${record.exoneree_reltn.last_name}`}</td>
@@ -50,7 +64,7 @@ export const RequestList = (props: RequestListProps) => {
 
             <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
                 <Tippy content="Previous Page" delay={[250, 100]} placement="bottom">
-                    <ArrowLeftCircle className="icon-no-outline" size={30} style={{ cursor: 'pointer',}} onClick={() => { }} />
+                    <ArrowLeftCircle className="icon-no-outline" size={30} style={{ cursor: 'pointer', }} onClick={() => { }} />
                 </Tippy>
                 <span className="text-muted small">
                     {`${1} - ${20} of ${200}`}

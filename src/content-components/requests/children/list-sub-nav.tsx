@@ -27,13 +27,13 @@ export const ListRequestNav = (props: ListRequestNavProps) => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a style={{ cursor: 'pointer' }} className="nav-link" onClick={() => props.filter_setter('all')}>Open</a>
+                        <a style={{ cursor: 'pointer' }} className="nav-link" onClick={() => props.filter_setter('all')}>🟢 Open</a>
                     </li>
                     <li className="nav-item">
-                        <a style={{ cursor: 'pointer' }} className="nav-link" onClick={() => props.filter_setter('with')}>Assigned</a>
+                        <a style={{ cursor: 'pointer' }} className="nav-link" onClick={() => props.filter_setter('with')}>👤 Assigned</a>
                     </li>
                     <li className="nav-item">
-                        <a style={{ cursor: 'pointer' }} className="nav-link" onClick={() => props.filter_setter('without')}>UnAssigned</a>
+                        <a style={{ cursor: 'pointer' }} className="nav-link" onClick={() => props.filter_setter('without')}>❓ Unassigned</a>
                     </li>
                 </ul>
             </div>

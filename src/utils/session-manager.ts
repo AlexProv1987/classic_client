@@ -41,10 +41,19 @@ class SessionManager {
     return this.getSession()?.user?.groups || []
   }
 
+  getFullfillmentRoles(): { [key: string]: any }[] {
+    return this.getSession()?.chapter_data.fullfillment_roles || [];
+  }
+
+  hasFullfillmentRole(key: string): boolean {
+    const roleArr = this.getFullfillmentRoles() as { [key: string]: any }[];
+    return roleArr.some(role => role.fullfilemt_role_type === key);
+  }
+
   hasSession(): boolean {
     return !!this.getToken();
   }
-  
+
   setSession(data: Record<string, any>) {
     this._session = data;
   }

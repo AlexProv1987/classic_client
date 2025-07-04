@@ -18,18 +18,14 @@ export interface Member {
     user_last_name: string;
 }
 
-export interface Status {
-    name:string,
-    value:string,
-}
 
 export interface RequestObject {
     id: string;
     request_type: string;
     description: string;
     exoneree_reltn: UserReltn;
-    fullfiller: Fullfiller;
-    status: Status;
+    fullfiller: Fullfiller | null;
+    status: string;
     get_status_display:string;
     updated:string,
     //yolo land
@@ -41,4 +37,9 @@ export interface RequestNote {
     get_note_type_display:string;
     note_text: string;
     created:string,
+}
+
+export interface StatusOption {
+  value: string;
+  name: string; 
 }
