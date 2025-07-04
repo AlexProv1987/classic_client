@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { axiosBaseURL, getConfig } from "../../../https";
-import { sessionManager } from "../../../utils/session-manager";
-import { BouncingDotsLoader } from "../../../common/bouncy-loader";
+import { axiosBaseURL, getConfig } from "../../https";
+import { sessionManager } from "../../utils/session-manager";
+import { BouncingDotsLoader } from "../../components/bouncy-loader";
 
 export const Home = () => {
     const [homeContent, setHomeContent] = useState<string | null>(null)
@@ -32,7 +32,7 @@ export const Home = () => {
             {homeContent ? (<iframe
                 title="GoogleDoc"
                 sandbox=""
-                style={{ border: 'none', width: '100%', height: '100vh' }}
+                style={{ border: 'none', width: '100%', height: '100vh',}}
                 srcDoc={homeContent} />
             ) : (
                 !alertMsg && <BouncingDotsLoader />

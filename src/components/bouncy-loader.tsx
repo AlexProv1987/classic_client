@@ -1,3 +1,4 @@
+import './css/bouncing-loader.css'
 export const BouncingDotsLoader = () => {
     return (
         <div className='container' style={{

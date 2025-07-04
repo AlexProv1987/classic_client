@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { sessionManager } from "../../../utils/session-manager";
-import { axiosBaseURL, getConfig } from "../../../https";
-import { RequestObject } from "../interface";
+import { sessionManager } from "../../utils/session-manager";
+import { axiosBaseURL, getConfig } from "../../https";
+import { RequestObject } from "./ts/interface";
 import { RequestList } from "./children/list";
 import { RecordView } from "./children/record-view";
 import { ListRequestNav } from "./children/list-sub-nav";
-import { FilterType } from "../type";
+import { FilterType } from "./ts/type";
 
 export const Requests = () => {
 
@@ -92,7 +92,10 @@ export const Requests = () => {
                     />
                 </div>
             ) : (
-                <RecordView />
+                <RecordView 
+                set_selected={setSelectedItem}
+                current={selectedItem}
+                />
             )}
         </div>
     )

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FilterType } from "../../type"
+import { FilterType } from "../ts/type"
 
 interface ListRequestNavProps {
     filter_setter: React.Dispatch<React.SetStateAction<FilterType>>,
@@ -23,7 +23,7 @@ export const ListRequestNav = (props: ListRequestNavProps) => {
         }
     };
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg secondary-nav">
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item">

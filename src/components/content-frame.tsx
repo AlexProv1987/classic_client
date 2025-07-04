@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ContentOpts } from "../common/types"
-import { Home } from "../content-components/home/parent/home";
-import { Requests } from "../content-components/requests/parent/requests";
+import { Home } from "../content-components/home/home";
+import { Requests } from "../content-components/requests/requests";
 
 interface ContentFrameProps {
     value: ContentOpts,

@@ -12,14 +12,14 @@ export const Main = () => {
         <div className='row'>
 
             {/**Nav Frame**/}
-            <div className='col col-md-2 border border-danger text-bg-dark'>
+            <div className='col col-md-2 border border-danger sidebar'>
                 <NavFrame 
                 set_content={setCurrentContect}
                 />
             </div>
 
             {/**Content Frame**/}
-            <div className='col col-md-10 border border-danger'>
+            <div className='col col-md-10 border border-danger p-0 content' >
                 <ContentFrame 
                 value={currentContent}
                 />
