@@ -28,3 +28,10 @@ export interface PendingMember {
     created:string,
     phone_number:string,
 }
+
+export interface UserHist {
+    id: number,
+    action: string,
+    note: string
+    [key: string]: any;
+}

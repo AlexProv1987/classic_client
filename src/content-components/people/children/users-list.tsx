@@ -39,14 +39,14 @@ export const UserList: React.FC<UserListProps> = (props) => {
 
     return (
         <Card className="shadow" style={{minHeight:'80vh'}}>
-            <Card.Header><TableHeader table_name={Config.USER_TYPE_PLURAL}/></Card.Header>
-            <Card.Body style={{paddingRight:'0',paddingLeft:'0', paddingTop:'0'}}>
+            <Card.Header className="secondary-nav"><TableHeader table_name={Config.USER_TYPE_PLURAL}/></Card.Header>
+            <Card.Body className="content" style={{paddingRight:'0',paddingLeft:'0', paddingTop:'0'}}>
                 {users === null ? (
                     <BouncingDotsLoader vh='25' />
                 ) : users.length === 0 ? (
                     <p className="text-muted text-center mt-3">No users found.</p>
                 ) : (
-                    <Table striped bordered hover responsive>
+                    <Table bordered hover responsive>
                         <thead>
                             <tr>
                                 <th><Eyeglasses /></th>
@@ -79,7 +79,7 @@ export const UserList: React.FC<UserListProps> = (props) => {
                     </Table>
                 )}
             </Card.Body>
-            <Card.Footer>
+            <Card.Footer className="secondary-nav">
                 <div className="d-flex justify-content-center align-items-center gap-3">
                     <Tippy content="Previous Page" delay={[250, 100]} placement="bottom">
                         <ArrowLeftCircle
