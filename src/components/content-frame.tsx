@@ -8,7 +8,7 @@ interface ContentFrameProps {
 }
 
 export const ContentFrame = (props: ContentFrameProps) => {
-    
+
     const renderView = () => {
         switch (props.value) {
             case 'home':
@@ -20,6 +20,8 @@ export const ContentFrame = (props: ContentFrameProps) => {
             case 'knowledge':
                 return null;
             case 'contacts':
+                return null;
+            case 'portal':
                 return null;
             default:
                 return null;

@@ -57,6 +57,11 @@ class SessionManager {
     return roleArr.some(role => role.fullfilemt_role_type === key);
   }
 
+  getLogo():string{
+    return this.getSession()?.chapter_data?.chapter?.chapter_logo || 
+    this.getSession()?.organization?.org_logo || ''
+  }
+
   hasSession(): boolean {
     return !!this.getToken();
   }
