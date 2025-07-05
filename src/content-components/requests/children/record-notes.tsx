@@ -9,7 +9,8 @@ interface RecordNotesProps {
     record_type: string,
     record_id: string,
     note: string,
-    note_setter: React.Dispatch<React.SetStateAction<string>>;
+    note_setter: React.Dispatch<React.SetStateAction<string>>,
+    parent_note:RequestNote | null,
 }
 
 export const RecordNotes = (props: RecordNotesProps) => {
@@ -37,6 +38,14 @@ export const RecordNotes = (props: RecordNotesProps) => {
             });
 
     }, [props.record_id]);
+
+    useEffect(() => {
+        console.log('effecter thinger dinger')
+        if(props.parent_note){
+            setNotes([props.parent_note, ...(notes || [])])
+            props.note_setter('')
+        }
+    }, [props.parent_note]);
 
     const postNote = () => {
         axiosBaseURL.post("request_api/request_notes/create_note/", {

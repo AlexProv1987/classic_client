@@ -6,6 +6,8 @@ import { RequestList } from "./children/list";
 import { RecordView } from "./children/record-view";
 import { ListRequestNav } from "./children/list-sub-nav";
 import { FilterType } from "./ts/type";
+import { AlertInfo } from "../../common/interfaces";
+import { Alert } from "react-bootstrap";
 
 type SortableRequestField =
     | keyof RequestObject
@@ -25,7 +27,7 @@ export const Requests = () => {
     const [selectedItem, setSelectedItem] = useState<RequestObject | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [sortConfig, setSortConfig] = useState<{ key: keyof RequestObject; direction: 'asc' | 'desc' } | null>(null);
-
+    const [alert, setAlert] = useState<AlertInfo | null>(null)
     //initial hook to make request
     useEffect(() => {
         axiosBaseURL
@@ -51,6 +53,16 @@ export const Requests = () => {
         }
     }
 
+    const handleUpdateCallback = (updated: RequestObject, alert: AlertInfo) => {
+        setRequestObjArr(prev => {
+            const updatedList = prev.map(item =>
+                item.id === updated.id ? updated : item
+            );
+            return sortRequests(updatedList);
+        });
+        setAlert(alert)
+        setSelectedItem(null);
+    };
 
     //function for sorting based on a key from the requestobject or combined vals - if you need more of these add another | string to the SortableRequestField type
     const sortRequests = (requests: RequestObject[]): RequestObject[] => {
@@ -61,7 +73,7 @@ export const Requests = () => {
         const { key, direction } = sortConfig;
         //copy to leave og alone
         const sorted = [...requests];
-        
+
 
         //decide what we are sorting on and how and do it
         sorted.sort((a, b) => {
@@ -78,7 +90,7 @@ export const Requests = () => {
                 bVal = b.fullfiller
                     ? `${b.fullfiller.user_first_name} ${b.fullfiller.user_last_name}`.toLowerCase()
                     : '';
-            //i may have fk'd this one up...once I get to a new day need to see if it sorts right
+                //i may have fk'd this one up...once I get to a new day need to see if it sorts right
             } else if (key === 'updated') {
                 aVal = new Date(a.updated).getTime();
                 bVal = new Date(b.updated).getTime();
@@ -144,6 +156,22 @@ export const Requests = () => {
                         filter_setter={setFilterType}
                         search_setter={setSearchQuery}
                     />
+                    <nav>
+                        {alert &&
+                            <Alert
+                                key={alert.id}
+                                dismissible
+                                variant={alert.variant}
+                                style={{
+                                    width: "100%",
+                                    zIndex: 1060,
+                                    borderRadius: 0,
+                                }}
+                            >
+                                {alert.message}
+                            </Alert>
+                        }
+                    </nav>
                     <RequestList
                         records={paginatedRequests}
                         set_record={setSelectedItem}
@@ -159,6 +187,7 @@ export const Requests = () => {
                 <RecordView
                     set_selected={setSelectedItem}
                     current={selectedItem}
+                    on_update={handleUpdateCallback}
                 />
             )}
         </div>

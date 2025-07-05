@@ -3,12 +3,14 @@ import { RequestObject } from "../ts/interface"
 import { useRef } from "react"
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional stylin
+import { sessionManager } from "../../../utils/session-manager";
 interface RecordNavProps {
     set_selected: React.Dispatch<React.SetStateAction<RequestObject | null>>,
+    request_type_value: string,
+    handle_submit:Function,
 }
 
 export const RecordNav = (props: RecordNavProps) => {
-
     return (
         <nav className="navbar navbar-expand-lg  border-bottom">
             <div className="collapse navbar-collapse" id="navbarNav">
@@ -25,14 +27,16 @@ export const RecordNav = (props: RecordNavProps) => {
                 </div>
             </div>
             <div className="d-flex">
-                <Tippy content="Assign to yourself" delay={[250, 100]} placement="bottom">
-                <button type='button' className="btn btn-outline-primary btn-sm me-2">Assign To Me</button>
-                </Tippy>
+                {sessionManager.hasFullfillmentRole(props.request_type_value) &&
+                    <Tippy content="Assign to yourself" delay={[250, 100]} placement="bottom">
+                        <button type='button' className="btn btn-outline-primary btn-sm me-2">Assign To Me</button>
+                    </Tippy>
+                }
                 <Tippy content="Update and go back" delay={[250, 100]} placement="bottom">
-                <button type='button' className="btn btn-outline-primary btn-sm me-2">Update</button>
+                    <button onClick={() => props.handle_submit('update')} type='button' className="btn btn-outline-primary btn-sm me-2">Update</button>
                 </Tippy>
                 <Tippy content="Save and Stay here" delay={[250, 100]} placement="bottom">
-                <button type='button' className="btn btn-outline-primary btn-sm me-2">Save</button>
+                    <button onClick={() => props.handle_submit('save')} className="btn btn-outline-primary btn-sm me-2">Save</button>
                 </Tippy>
             </div>
         </nav>

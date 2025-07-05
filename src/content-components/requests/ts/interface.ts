@@ -27,7 +27,6 @@ export interface RequestObject {
     fullfiller: Fullfiller | null;
     status: string;
     get_status_display:string;
-    updated:string,
     //yolo land
     [key: string]: any;
 }
