@@ -1,5 +1,5 @@
 import { Alert, Button, Card, Container, FloatingLabel, Form } from "react-bootstrap"
-import { ArrowLeftCircle, ArrowRightCircle } from "react-bootstrap-icons"
+import { ArrowLeftCircle, ArrowRightCircle, PersonCheck, PersonFill } from "react-bootstrap-icons"
 import { axiosBaseURL, getConfig } from "../../../https";
 import { useEffect, useState } from "react";
 import { RequestNote } from "../ts/interface";
@@ -40,7 +40,6 @@ export const RecordNotes = (props: RecordNotesProps) => {
     }, [props.record_id]);
 
     useEffect(() => {
-        console.log('effecter thinger dinger')
         if(props.parent_note){
             setNotes([props.parent_note, ...(notes || [])])
             props.note_setter('')
@@ -140,7 +139,7 @@ export const RecordNotes = (props: RecordNotesProps) => {
                         {currentNotes.map((note, index) => (
                             <Card key={index} className="mb-2">
                                 <Card.Header>
-                                    {note.get_note_type_display} · {(() => {
+                                    {(note.note_type === 'fullfiller' || note.note_type === 'manager') ? <PersonCheck size={24} color='green'/> : <PersonFill  size={24} color='blue'  />} · {(() => {
                                         const [year, month, day] = note.created.split('T')[0].split('-');
                                         return `${parseInt(month)}/${parseInt(day)}/${year}`;
                                     })()}

@@ -9,9 +9,9 @@ import { RequestAPIHandler } from "../utils/api-req";
 import { AlertInfo } from "../../../common/interfaces";
 
 interface RecordProps {
-    set_selected: React.Dispatch<React.SetStateAction<RequestObject | null>>,
+    set_selected: () => void,
     current: RequestObject,
-    on_update: (updated: RequestObject,alert:AlertInfo) => void,
+    on_update: (updated: RequestObject, alert: AlertInfo) => void,
 }
 
 export const RecordView = (props: RecordProps) => {
@@ -23,7 +23,7 @@ export const RecordView = (props: RecordProps) => {
     const [alert, setAlert] = useState<AlertInfo | null>(null)
 
     const previousRef = useRef<RequestObject>({ ...props.current });
-;
+    ;
 
     const statusOpts: StatusOption[] = [
         { value: 'new', name: 'New' },
@@ -55,8 +55,22 @@ export const RecordView = (props: RecordProps) => {
             });
     }
 
-    const handleSubmit = async (caller: 'update' | 'save') => {
-        const handler = new RequestAPIHandler(localCurrent, previousRef.current, { note_text: note.trim(), note_type: 'fullfiller' })
+    const handleAssignToMe = () => {
+        const fullfiller = sessionManager.getFullfillmentRoles().find(f => f.fullfilemt_role_type === localCurrent.request_type_value)
+        
+        //avoid race case by passing overriden data to handlesubmit
+        if (fullfiller && fullfiller.id !== localCurrent.fullfiller?.id) {
+            const updated = { ...localCurrent, fullfiller };
+            setLocalCurrent(updated);
+            handleSubmit('me', updated);
+        }else{
+            setAlert({ message: 'This is already assigned to you!', variant: 'warning', id: Date.now() })
+        }
+    }
+
+    const handleSubmit = async (caller: 'update' | 'save' | 'me', overrideCurrent?: RequestObject) => {
+        const currentData = overrideCurrent || localCurrent;
+        const handler = new RequestAPIHandler(currentData, previousRef.current, { note_text: note.trim(), note_type: 'fullfiller' })
         try {
             const response = await handler.updateRequestAPICall()
             if (typeof (response) === 'string') {
@@ -64,13 +78,14 @@ export const RecordView = (props: RecordProps) => {
             } else if (typeof (response) === 'object') {
                 switch (caller) {
                     case 'save':
+                    case 'me':
                         previousRef.current = response.request
                         setLocalCurrent(response.request)
                         response.note && setRecordNote(response.note)
                         setAlert({ message: 'Request Updated!', variant: 'success', id: Date.now() })
                         return;
                     case 'update':
-                        props.on_update(response.request,{message:'Request Updated',variant:'success',id: Date.now()})
+                        props.on_update(response.request, { message: 'Request Updated', variant: 'success', id: Date.now() })
                         return;
                     default:
                         return;
@@ -89,6 +104,7 @@ export const RecordView = (props: RecordProps) => {
                         set_selected={props.set_selected}
                         request_type_value={localCurrent.request_type_value}
                         handle_submit={handleSubmit}
+                        handle_assign={handleAssignToMe}
                     />
                     <nav>
                         {alert &&

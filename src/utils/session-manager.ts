@@ -1,3 +1,5 @@
+import { Fullfiller } from "../content-components/requests/ts/interface";
+
 export { };
 
 class SessionManager {
@@ -41,12 +43,17 @@ class SessionManager {
     return this.getSession()?.user?.groups || []
   }
 
-  getFullfillmentRoles(): { [key: string]: any }[] {
+  getFullfillmentRoles(): Fullfiller[] {
     return this.getSession()?.chapter_data.fullfillment_roles || [];
   }
 
+  getFullfillerIDbyType(roleType:string):string | null {
+    const match = this.getFullfillmentRoles().find(f => f.fullfilemt_role_type === roleType);
+    return match ? match.id : null;
+  }
+
   hasFullfillmentRole(key: string): boolean {
-    const roleArr = this.getFullfillmentRoles() as { [key: string]: any }[];
+    const roleArr: Fullfiller[] = this.getFullfillmentRoles();;
     return roleArr.some(role => role.fullfilemt_role_type === key);
   }
 

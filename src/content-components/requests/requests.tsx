@@ -45,6 +45,7 @@ export const Requests = () => {
         setRequestObjArr(prev => sortRequests(prev));
     }, [sortConfig]);
 
+    //check session for request url
     const getURLParam = (): string => {
         if (sessionManager.getGroups().includes('chapter_manager')) {
             return `chapter_requests/?chapter_id=${sessionManager.getChapterID()}`;
@@ -53,6 +54,13 @@ export const Requests = () => {
         }
     }
 
+    //clear any stale alert and null item
+    const handleBack = () => {
+        setAlert(null);
+        setSelectedItem(null);
+    };
+
+    //update the state of our object array - re sort and set our alerts and item to null
     const handleUpdateCallback = (updated: RequestObject, alert: AlertInfo) => {
         setRequestObjArr(prev => {
             const updatedList = prev.map(item =>
@@ -106,7 +114,6 @@ export const Requests = () => {
 
         return sorted;
     };
-
 
     //sort config updating to handle re render
     const handleColumnSort = (key: SortableRequestField) => {
@@ -172,6 +179,10 @@ export const Requests = () => {
                             </Alert>
                         }
                     </nav>
+                    <div className="d-flex align-items-center text-muted small ms-2 mb-2 mt-2">
+                        <i className="bi bi-table me-2"></i>
+                        <span>Request Table</span>
+                    </div>
                     <RequestList
                         records={paginatedRequests}
                         set_record={setSelectedItem}
@@ -185,7 +196,7 @@ export const Requests = () => {
                 </>
             ) : (
                 <RecordView
-                    set_selected={setSelectedItem}
+                    set_selected={handleBack}
                     current={selectedItem}
                     on_update={handleUpdateCallback}
                 />
