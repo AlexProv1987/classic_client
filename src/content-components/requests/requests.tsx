@@ -14,11 +14,6 @@ type SortableRequestField =
     | 'exoneree_name'
     | 'fullfiller_name';
 
-interface SortConfig {
-    key: SortableRequestField;
-    direction: 'asc' | 'desc';
-}
-
 export const Requests = () => {
     //state vars
     const [currentPage, setCurrentPage] = useState(1);
