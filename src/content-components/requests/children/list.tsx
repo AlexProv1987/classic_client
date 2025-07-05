@@ -23,7 +23,7 @@ export const RequestList = (props: RequestListProps) => {
                     <tr>
                         <th><Eyeglasses /></th>
                         <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('request_type')}>
-                            Type {props.sort_config?.key === 'request_type' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                            Type {props.sort_config?.key === 'request_type' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
                         </th>
                         <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('exoneree_name')}>
                             Requested For {props.sort_config?.key === 'exoneree_name' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
@@ -32,13 +32,13 @@ export const RequestList = (props: RequestListProps) => {
                             Assignee {props.sort_config?.key === 'fullfiller_name' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
                         </th>
                         <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('status')}>
-                            Status {props.sort_config?.key === 'status' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                            Status {props.sort_config?.key === 'status' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
                         </th>
                         <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('updated')}>
-                            Updated {props.sort_config?.key === 'updated' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                            Updated {props.sort_config?.key === 'updated' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
                         </th>
                         <th style={{ cursor: 'pointer' }} onClick={() => props.on_sort?.('created')}>
-                            Created {props.sort_config?.key === 'created' ? (props.sort_config.direction === 'asc' ? '↑' : '↓') : ''}
+                            Created {props.sort_config?.key === 'created' && (props.sort_config.direction === 'asc' ? '↑' : '↓')}
                         </th>
                     </tr>
                 </thead>
@@ -75,7 +75,7 @@ export const RequestList = (props: RequestListProps) => {
             <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
                 <Tippy content="Previous Page" delay={[250, 100]} placement="bottom">
                     <ArrowLeftCircle
-                        className="icon-no-outline"
+                        className="icon-no-focus"
                         size={30}
                         style={{ cursor: props.page > 1 ? 'pointer' : 'not-allowed', opacity: props.page > 1 ? 1 : 0.5 }}
                         onClick={() => {
@@ -88,7 +88,7 @@ export const RequestList = (props: RequestListProps) => {
                 </span>
                 <Tippy content="Next Page" delay={[250, 100]} placement="bottom">
                     <ArrowRightCircle
-                        className="icon-no-outline"
+                        className="icon-no-focus"
                         size={30}
                         style={{
                             cursor: props.page * props.page_size < props.total ? 'pointer' : 'not-allowed',

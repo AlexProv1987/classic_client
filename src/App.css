@@ -50,3 +50,8 @@ body,
 .content {
   background: linear-gradient(135deg, #f5f7fa, #e4ecf4)
 }
+
+.icon-no-focus:focus {
+  outline: none;
+  box-shadow: none;
+}

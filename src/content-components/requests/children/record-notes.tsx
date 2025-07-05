@@ -4,13 +4,14 @@ import { axiosBaseURL, getConfig } from "../../../https";
 import { useEffect, useState } from "react";
 import { RequestNote } from "../ts/interface";
 import { BouncingDotsLoader } from "../../../components/bouncy-loader";
+import Tippy from "@tippyjs/react";
 
 interface RecordNotesProps {
     record_type: string,
     record_id: string,
     note: string,
     note_setter: React.Dispatch<React.SetStateAction<string>>,
-    parent_note:RequestNote | null,
+    parent_note: RequestNote | null,
 }
 
 export const RecordNotes = (props: RecordNotesProps) => {
@@ -40,7 +41,7 @@ export const RecordNotes = (props: RecordNotesProps) => {
     }, [props.record_id]);
 
     useEffect(() => {
-        if(props.parent_note){
+        if (props.parent_note) {
             setNotes([props.parent_note, ...(notes || [])])
             props.note_setter('')
         }
@@ -105,9 +106,11 @@ export const RecordNotes = (props: RecordNotesProps) => {
                         />
                     </FloatingLabel>
                     <div className="d-flex justify-content-end mb-2">
-                        <Button onClick={() => postNote()} size="sm" variant="outline-primary">
-                            Post
-                        </Button>
+                        <Tippy content="Send your note" delay={[250, 100]} placement="bottom">
+                            <Button onClick={() => postNote()} size="sm" variant="outline-primary">
+                                Post
+                            </Button>
+                        </Tippy>
                     </div>
                 </Form>
             </div>
@@ -123,23 +126,29 @@ export const RecordNotes = (props: RecordNotesProps) => {
                             </span>
 
                             <div className="d-flex align-items-center gap-2">
-                                <ArrowLeftCircle
-                                    size={20}
-                                    style={{ cursor: currentPage > 1 ? 'pointer' : 'not-allowed', opacity: currentPage > 1 ? 1 : 0.5 }}
-                                    onClick={prevPage}
-                                />
-                                <ArrowRightCircle
-                                    size={20}
-                                    style={{ cursor: currentPage < totalPages ? 'pointer' : 'not-allowed', opacity: currentPage < totalPages ? 1 : 0.5 }}
-                                    onClick={nextPage}
-                                />
+                                <Tippy content="Previous" delay={[250, 100]} placement="bottom">
+                                    <ArrowLeftCircle
+                                        className="icon-no-focus"
+                                        size={20}
+                                        style={{ cursor: currentPage > 1 ? 'pointer' : 'not-allowed', opacity: currentPage > 1 ? 1 : 0.5 }}
+                                        onClick={prevPage}
+                                    />
+                                </Tippy>
+                                <Tippy content="Next" delay={[250, 100]} placement="bottom">
+                                    <ArrowRightCircle
+                                        className="icon-no-focus"
+                                        size={20}
+                                        style={{ cursor: currentPage < totalPages ? 'pointer' : 'not-allowed', opacity: currentPage < totalPages ? 1 : 0.5 }}
+                                        onClick={nextPage}
+                                    />
+                                </Tippy>
                             </div>
                         </div>
                         {/*notes object map*/}
                         {currentNotes.map((note, index) => (
                             <Card key={index} className="mb-2">
                                 <Card.Header>
-                                    {(note.note_type === 'fullfiller' || note.note_type === 'manager') ? <PersonCheck size={24} color='green'/> : <PersonFill  size={24} color='blue'  />} · {(() => {
+                                    {(note.note_type === 'fullfiller' || note.note_type === 'manager') ? <PersonCheck size={24} color='green' /> : <PersonFill size={24} color='blue' />} · {(() => {
                                         const [year, month, day] = note.created.split('T')[0].split('-');
                                         return `${parseInt(month)}/${parseInt(day)}/${year}`;
                                     })()}
