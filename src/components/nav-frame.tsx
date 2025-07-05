@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { sessionManager } from "../utils/session-manager";
 import logo from '../logo.svg'
 import { ContentOpts } from "../common/types";
+import { BookHalf, ClipboardCheck, Compass, Grid3x3Gap, House, People, PersonLinesFill } from "react-bootstrap-icons";
 
 interface NavFrameProps {
     set_content: React.Dispatch<React.SetStateAction<ContentOpts>>;
@@ -10,7 +11,7 @@ interface NavFrameProps {
 interface Navigation {
     name: string,
     value: ContentOpts,
-    icon: string,
+    icon: ReactElement,
     submenus: Navigation[] | null,
     accessible: boolean,
     order: number,
@@ -18,12 +19,12 @@ interface Navigation {
 
 export const NavFrame = (props: NavFrameProps) => {
     const [navigation, setNavigation] = useState<Navigation[]>([
-        { name: 'Home', value: 'home', icon: 'test', submenus: null, accessible: false, order: 100 },
-        { name: 'Requests', value: 'requests', icon: 'test', submenus: null, accessible: false, order: 200 },
-        { name: 'People', value: 'people', icon: 'test', submenus: null, accessible: false, order: 300 },
-        { name: 'Knowledge', value: 'knowledge', icon: 'test', submenus: null, accessible: false, order: 400 },
-        { name: 'Contacts', value: 'contacts', icon: 'test', submenus: null, accessible: false, order: 500 },
-         { name: 'Portal', value: 'portal', icon: 'test', submenus: null, accessible: false, order: 500 },
+        { name: 'Home', value: 'home', icon: <House size={24}/>, submenus: null, accessible: false, order: 100 },
+        { name: 'Requests', value: 'requests', icon: <ClipboardCheck size={24}/>, submenus: null, accessible: false, order: 200 },
+        { name: 'People', value: 'people', icon: <People size={24}/>, submenus: null, accessible: false, order: 300 },
+        { name: 'Knowledge', value: 'knowledge', icon: <BookHalf size={24}/>, submenus: null, accessible: false, order: 400 },
+        { name: 'Contacts', value: 'contacts', icon: <PersonLinesFill size={24}/>, submenus: null, accessible: false, order: 500 },
+        { name: 'Portal', value: 'portal', icon: <Grid3x3Gap size={24}/>, submenus: null, accessible: false, order: 500 },
     ])
 
     useEffect(() => {
@@ -80,7 +81,7 @@ export const NavFrame = (props: NavFrameProps) => {
         <div className="d-flex flex-column justify-content-between" style={{ height: '100vh' }}>
             <div>
                 <a className="pt-3 d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span className="fs-4"> <img src={logo} alt="Bootstrap" width="40" height="40"/>Navigator</span>
+                    <span className="me-2"><Compass size={30} color='skyblue'/></span><h2>Navigator</h2>
                 </a>
                 <hr />
                 <ul className="nav nav-pills flex-column mb-auto">
@@ -90,10 +91,10 @@ export const NavFrame = (props: NavFrameProps) => {
                             return (
                                 <li key={nav.value} className="nav-item">
                                     <a
-                                        className="nav-link d-flex justify-content-between align-items-center text-white"
+                                        className="nav-link d-flex align-items-center text-white"
                                         role="button"
                                         onClick={() => props.set_content(nav.value)}>
-                                        {nav.name}
+                                        <span className="me-2">{nav.icon}</span>{nav.name}
                                     </a>
                                 </li>
                             )

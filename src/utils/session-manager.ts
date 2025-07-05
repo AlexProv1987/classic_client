@@ -16,6 +16,7 @@ class SessionManager {
     } catch {
       this._session = null;
     }
+    console.log(this._session)
   }
 
   getSession(): Record<string, any> | null {

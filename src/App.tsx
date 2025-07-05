@@ -6,11 +6,15 @@ import { useSessionState } from './hooks';
 import { AuthPage } from './pages/auth';
 import { Session } from './common/interfaces';
 import { GetSupport } from './components/fab';
+import { sessionManager } from './utils/session-manager';
 
 function App() {
   const [user, setUser] = useSessionState<Session | null>('session', null);
-  
-  
+
+  const logOut = () => {
+    setUser(null)
+  }
+
   return (
 
     <div className="bg-light container-fluid" style={{
@@ -20,24 +24,28 @@ function App() {
       padding: 0,
       margin: 0,
     }}>
-      
+
       {/*Fab*/}
       {user && <GetSupport />}
 
       {/**Nav Bar**/}
-      <NavBar />
+      <NavBar
+        log_out={logOut}
+        has_user={user ? true : false}
+      />
+      
 
       {/**Main**/}
       <div className='container-fluid' style={{ flex: 1 }}>
-      {user ? 
-      <Main /> : 
-      <AuthPage
-      set_has_token={setUser}
-      />}
+        {user ?
+          <Main /> :
+          <AuthPage
+            set_has_token={setUser}
+          />}
       </div>
 
       {/**Footer**/}
-     <Footer/>
+      <Footer />
     </div>
 
   );

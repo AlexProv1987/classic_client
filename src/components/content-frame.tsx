@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { ContentOpts } from "../common/types"
 import { Home } from "../content-components/home/home";
 import { Requests } from "../content-components/requests/requests";
+import { People } from "../content-components/people/people";
 
 interface ContentFrameProps {
     value: ContentOpts,
@@ -16,7 +17,7 @@ export const ContentFrame = (props: ContentFrameProps) => {
             case 'requests':
                 return <Requests />;
             case 'people':
-                return null;
+                return <People/>;
             case 'knowledge':
                 return null;
             case 'contacts':

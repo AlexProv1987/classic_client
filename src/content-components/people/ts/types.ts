@@ -1,0 +1,1 @@
+export type PeopleContent = 'users' | 'members' | 'future_members'

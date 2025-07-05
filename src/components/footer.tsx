@@ -5,7 +5,7 @@ export const Footer = () =>{
         <nav className="navbar sidebar">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
-            <img src={logo} alt="Bootstrap" width="30" height="30" />
+            <img src={logo} alt="Bootstrap" width="28" height="28" />
           </a>
         </div>
       </nav>

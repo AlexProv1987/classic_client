@@ -5,8 +5,8 @@ import { ContentOpts } from "../common/types"
 
 //we will check mobile here and instead make a callback to populate the nav bar - maybe i kinda wanna do desktop/tablet only
 export const Main = () => {
-
-    const [currentContent,setCurrentContect] = useState<ContentOpts>('home')
+    //DONT FORGET TO CHANGE THIS BACK
+    const [currentContent,setCurrentContect] = useState<ContentOpts>('people')
 
     return (
         <div className='row'>
