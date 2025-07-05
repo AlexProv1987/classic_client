@@ -17,7 +17,7 @@ interface Navigation {
     order: number,
 }
 
-export const NavFrame = (props: NavFrameProps) => {
+export const NavFrame: React.FC<NavFrameProps> = (props) => {
     const [navigation, setNavigation] = useState<Navigation[]>([
         { name: 'Home', value: 'home', icon: <House size={24}/>, submenus: null, accessible: false, order: 100 },
         { name: 'Requests', value: 'requests', icon: <ClipboardCheck size={24}/>, submenus: null, accessible: false, order: 200 },

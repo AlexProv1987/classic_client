@@ -11,7 +11,7 @@ interface RecordNavProps {
     request_type_value: string,
 }
 
-export const RecordNav = (props: RecordNavProps) => {
+export const RecordNav: React.FC<RecordNavProps> = (props) => {
     return (
         <nav className="navbar navbar-expand-lg  border-bottom secondary-nav">
             <div className="collapse navbar-collapse" id="navbarNav">

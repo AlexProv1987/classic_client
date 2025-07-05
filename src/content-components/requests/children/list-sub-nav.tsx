@@ -5,7 +5,7 @@ interface ListRequestNavProps {
     filter_setter: React.Dispatch<React.SetStateAction<FilterType>>,
     search_setter: React.Dispatch<React.SetStateAction<string>>,
 }
-export const ListRequestNav = (props: ListRequestNavProps) => {
+export const ListRequestNav: React.FC<ListRequestNavProps> = (props) => {
     const [searchInput, setSearchInput] = useState('');
 
     const handleSubmit = (event: React.FormEvent) => {

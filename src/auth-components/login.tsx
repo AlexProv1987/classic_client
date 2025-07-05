@@ -12,7 +12,7 @@ interface LoginForm {
     password: string,
 }
 
-export const LogIn = (props: LoginProps) => {
+export const LogIn: React.FC<LoginProps> = (props) => {
     const [formObj, setFormObj] = useState<LoginForm>({
         username: '',
         password: '',

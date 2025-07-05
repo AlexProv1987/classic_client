@@ -8,7 +8,7 @@ interface ContentFrameProps {
     value: ContentOpts,
 }
 
-export const ContentFrame = (props: ContentFrameProps) => {
+export const ContentFrame: React.FC<ContentFrameProps> = (props) => {
 
     const renderView = () => {
         switch (props.value) {

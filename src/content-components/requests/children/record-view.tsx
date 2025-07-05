@@ -14,7 +14,7 @@ interface RecordProps {
     on_update: (updated: RequestObject, alert: AlertInfo) => void,
 }
 
-export const RecordView = (props: RecordProps) => {
+export const RecordView: React.FC<RecordProps> = (props) => {
 
     const [localCurrent, setLocalCurrent] = useState<RequestObject>({ ...props.current });
     const [note, setNote] = useState<string>('')

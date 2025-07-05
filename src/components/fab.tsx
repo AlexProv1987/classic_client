@@ -3,7 +3,7 @@ import { Alert, Button, Form, Modal, ModalBody, OverlayTrigger, Tooltip } from "
 import { ChatText, InfoCircle } from "react-bootstrap-icons";
 import './css/fab.css'
 import Tippy from "@tippyjs/react";
-export const GetSupport = () => {
+export const GetSupport: React.FC = () => {
 
     const [show, setShow] = useState<boolean>(false)
     const [alertMsg, setAlertMsg] = useState<string | null>(null)

@@ -15,7 +15,7 @@ interface RequestListProps {
     page_size: number;
     set_page: React.Dispatch<React.SetStateAction<number>>;
 }
-export const RequestList = (props: RequestListProps) => {
+export const RequestList: React.FC<RequestListProps> = (props) => {
     return (
         <>
             <Table striped bordered hover responsive="sm">

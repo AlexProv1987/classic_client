@@ -1,4 +1,4 @@
-export const SignUp = () => {
+export const SignUp: React.FC = () => {
     return (
         <div>Sign Up</div>
     )

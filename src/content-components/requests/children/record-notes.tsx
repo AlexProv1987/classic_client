@@ -14,7 +14,7 @@ interface RecordNotesProps {
     parent_note: RequestNote | null,
 }
 
-export const RecordNotes = (props: RecordNotesProps) => {
+export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
     const [notes, setNotes] = useState<RequestNote[] | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [alertMsg, setAlertMsg] = useState<string | null>(null)

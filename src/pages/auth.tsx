@@ -10,7 +10,7 @@ interface AuthPageProps {
 
 type AuthView = 'login' | 'forgot_password' | 'sign_up';
 
-export const AuthPage = (props: AuthPageProps) => {
+export const AuthPage: React.FC<AuthPageProps> = (props) => {
     const [choice, setChoice] = useState<AuthView>('login')
 
     const renderView = () => {

@@ -14,7 +14,7 @@ type SortableRequestField =
     | 'exoneree_name'
     | 'fullfiller_name';
 
-export const Requests = () => {
+export const Requests: React.FC  = () => {
     //state vars
     const [currentPage, setCurrentPage] = useState(1);
     const [requestObjArr, setRequestObjArr] = useState<RequestObject[]>([]);

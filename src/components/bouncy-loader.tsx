@@ -2,7 +2,7 @@ import './css/bouncing-loader.css'
 interface LoaderProps{
     vh:string,
 }
-export const BouncingDotsLoader = (props:LoaderProps) => {
+export const BouncingDotsLoader: React.FC<LoaderProps> = (props) => {
     return (
         <div className='container' style={{
             minHeight: props.vh ? props.vh : '50vh', 
