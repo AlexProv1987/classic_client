@@ -1,9 +1,9 @@
 import { Alert, Button, Card, Container, FloatingLabel, Form } from "react-bootstrap"
-import { ArrowLeftCircle, ArrowRightCircle, PersonCheck, PersonFill } from "react-bootstrap-icons"
+import { Activity, ArrowLeftCircle, ArrowRightCircle, PersonCheck, PersonFill } from "react-bootstrap-icons"
 import { axiosBaseURL, getConfig } from "../../../https";
 import { useEffect, useState } from "react";
 import { RequestNote } from "../ts/interface";
-import { BouncingDotsLoader } from "../../../components/bouncy-loader";
+import { BouncingDotsLoader } from "../../common/bouncy-loader";
 import Tippy from "@tippyjs/react";
 
 interface RecordNotesProps {
@@ -148,13 +148,17 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
                         {currentNotes.map((note, index) => (
                             <Card key={index} className="mb-2">
                                 <Card.Header>
-                                    {(note.note_type === 'fullfiller' || note.note_type === 'manager') ? <PersonCheck size={24} color='green' /> : <PersonFill size={24} color='blue' />} · {(() => {
-                                        const [year, month, day] = note.created.split('T')[0].split('-');
-                                        return `${parseInt(month)}/${parseInt(day)}/${year}`;
-                                    })()}
+                                    <span>
+                                        {(note.note_type === 'fullfiller' || note.note_type === 'manager') ? 'Fullfiller' : 'Requester'} · {
+                                            (() => {
+                                                const [year, month, day] = note.created.split('T')[0].split('-');
+                                                return `${parseInt(month)}/${parseInt(day)}/${year}`;
+                                            })()
+                                        }
+                                    </span>
                                 </Card.Header>
                                 <Card.Body>
-                                    <Card.Text>{note.note_text}</Card.Text>
+                                    <Card.Text><span className="me-2"><Activity size={20} color='red' /></span>{note.note_text}</Card.Text>
                                 </Card.Body>
                             </Card>
                         ))}

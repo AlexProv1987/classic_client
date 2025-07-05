@@ -1,4 +1,3 @@
-import './css/bouncing-loader.css'
 interface LoaderProps{
     vh:string,
 }

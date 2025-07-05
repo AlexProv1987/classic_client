@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosBaseURL, getConfig } from "../../https";
 import { sessionManager } from "../../utils/session-manager";
-import { BouncingDotsLoader } from "../../components/bouncy-loader";
+import { BouncingDotsLoader } from "../common/bouncy-loader";
 
 export const Home = () => {
     const [homeContent, setHomeContent] = useState<string | null>(null)

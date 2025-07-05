@@ -8,7 +8,7 @@ class SessionManager {
 
   //lazy load since this instance is created when our app loads and before session creation
   //this should always exist post login but just in case
-  private loadSession() {
+  private _loadSession() {
     if (this._session !== null) return;
     try {
       const raw = sessionStorage.getItem(this.key);
@@ -16,11 +16,10 @@ class SessionManager {
     } catch {
       this._session = null;
     }
-    console.log(this._session)
   }
 
   getSession(): Record<string, any> | null {
-    this.loadSession();
+    this._loadSession();
     return this._session;
   }
 

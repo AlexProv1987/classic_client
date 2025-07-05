@@ -81,7 +81,7 @@ export const NavFrame: React.FC<NavFrameProps> = (props) => {
         <div className="d-flex flex-column justify-content-between" style={{ height: '100vh' }}>
             <div>
                 <a className="pt-3 d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span className="me-2"><Compass size={30} color='skyblue'/></span><h2>Navigator</h2>
+                    <span className="me-2"><Compass size={30} color='skyblue'/></span><h2>Apps</h2>
                 </a>
                 <hr />
                 <ul className="nav nav-pills flex-column mb-auto">

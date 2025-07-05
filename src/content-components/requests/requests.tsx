@@ -8,6 +8,7 @@ import { ListRequestNav } from "./children/list-sub-nav";
 import { FilterType } from "./ts/type";
 import { AlertInfo } from "../../common/interfaces";
 import { Alert } from "react-bootstrap";
+import { TableHeader } from "../common/table-header";
 
 type SortableRequestField =
     | keyof RequestObject
@@ -174,10 +175,7 @@ export const Requests: React.FC  = () => {
                             </Alert>
                         }
                     </nav>
-                    <div className="d-flex align-items-center text-muted small ms-2 mb-2 mt-2">
-                        <i className="bi bi-table me-2"></i>
-                        <span>Request Table</span>
-                    </div>
+                  <TableHeader table_name="Request"/>
                     <RequestList
                         records={paginatedRequests}
                         set_record={setSelectedItem}

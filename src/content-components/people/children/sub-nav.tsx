@@ -1,4 +1,4 @@
-import { PeopleFill, PersonBadge, PersonFill, PersonPlus, PersonRaisedHand } from "react-bootstrap-icons";
+import {  PersonBadge, PersonFill, PersonRaisedHand } from "react-bootstrap-icons";
 import { PeopleContent } from "../ts/types";
 import { Config } from "../../../config";
 

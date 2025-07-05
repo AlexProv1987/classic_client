@@ -9,7 +9,6 @@ interface NavProps {
 }
 
 export const NavBar:React.FC<NavProps> = (props) => {
-  console.log(sessionManager.hasSession())
   return (
       <nav className="navbar sidebar">
         <div className="container-fluid">
