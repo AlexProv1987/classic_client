@@ -18,7 +18,25 @@ interface UserFlyOutProps {
 
 export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
     const [userHist, setUserHist] = useState<UserHist[] | null>(null)
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
     const tiersArray: UserTiers[] = [1, 2, 3, 4, 5]
+    const notesPerPage = 3;
+
+    // Calculate indices
+    const totalNotes = userHist?.length || 0;
+    const totalPages = Math.ceil(totalNotes / notesPerPage);
+    const startIndex = (currentPage - 1) * notesPerPage;
+    const endIndex = Math.min(startIndex + notesPerPage, totalNotes);
+    const curretHist = userHist?.slice(startIndex, endIndex) || [];
+
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(prev => prev - 1);
+    };
 
     useEffect(() => {
         if (!props.user) return;
@@ -137,7 +155,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                             <>
                                 <div className="d-flex justify-content-between align-items-center mb-2 mt-2">
                                     <span className="badge bg-secondary">
-                                        1 - 5 of 20
+                                       {totalNotes === 0 ? 0 : startIndex + 1} - {endIndex} of {totalNotes}
                                     </span>
 
                                     <div className="d-flex align-items-center gap-2">
@@ -145,21 +163,21 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                                             <ArrowLeftCircle
                                                 className="icon-no-focus"
                                                 size={20}
-                                                style={{ cursor: 'pointer' }}
-                                                onClick={() => { }}
+                                                style={{ cursor: currentPage > 1 ? 'pointer' : 'not-allowed', opacity: currentPage > 1 ? 1 : 0.5 }}
+                                                onClick={prevPage}
                                             />
                                         </Tippy>
                                         <Tippy content="Next" delay={[250, 100]} placement="bottom">
                                             <ArrowRightCircle
                                                 className="icon-no-focus"
                                                 size={20}
-                                                style={{ cursor: 'pointer' }}
-                                                onClick={() => { }}
+                                                style={{ cursor: currentPage < totalPages ? 'pointer' : 'not-allowed', opacity: currentPage < totalPages ? 1 : 0.5 }}
+                                                onClick={nextPage}
                                             />
                                         </Tippy>
                                     </div>
                                 </div>
-                                {userHist.map((hist, index) => (
+                                {curretHist.map((hist, index) => (
                                     <Card className="mb-2">
                                         <Card.Header>
                                             {hist.created_by_first_name} {hist.created_by_last_name} - {hist.created.split('T')[0]}
