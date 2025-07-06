@@ -18,9 +18,8 @@ export function UserList({
     handle_selected,
     updated_user
 }: UserListProps) {
-
     const [users, setUsers] = useState<UserProfile[] | null>(null)
-    console.log('render me')
+
     useEffect(() => {
         axiosBaseURL
             .get(`exoneree_management_api/exoneree_management/exonerees/?chapter_id=${sessionManager.getChapterID()}`, getConfig())
@@ -36,6 +35,13 @@ export function UserList({
 
     useEffect(() => {
         if (!updated_user) return;
+        setUsers(prev => {
+            if (!prev) return prev;
+            const updatedUsers = prev.map(item =>
+                item.id === updated_user.id ? updated_user : item
+            );
+            return updatedUsers;
+        });
     }, [updated_user])
 
     return (

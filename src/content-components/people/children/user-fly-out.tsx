@@ -16,7 +16,7 @@ interface UserFlyOutProps {
     user: UserProfile | null,
 }
 
-export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
+export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_callback, user }: UserFlyOutProps) => {
     const [userHist, setUserHist] = useState<UserHist[] | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -39,12 +39,10 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
     };
 
     useEffect(() => {
-        if (!props.user) return;
-
+        if (!user) return;
         axiosBaseURL
-            .get(`exoneree_management_api/exoneree_management/exoneree_hist/?user_id=${props.user.user.id}`, getConfig())
+            .get(`exoneree_management_api/exoneree_management/exoneree_hist/?user_id=${user.user.id}`, getConfig())
             .then((response) => {
-                console.log(response.data)
                 setUserHist(response.data)
             })
             .catch((error) => {
@@ -52,26 +50,62 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
             }).finally(() => {
                 //..
             })
-    }, [props.user]);
+    }, [user]);
+
+    const handleExonereeActive = (action: "inactivate" | "activate") => {
+        axiosBaseURL.post("exoneree_management_api/exoneree_management/manage_exoneree_status/", { profile_id: user?.id, action: action }, getConfig())
+            .then(function (response) {
+                console.log(response.data)
+                //this response.data obj does return the added history note - since we navigate away not grabbing but its avail
+                update_callback(response.data.user_profile, 
+                    { message: `${user?.user.first_name} has been ${response.data.user_profile.user.is_active ? 'Re-Activated' : 'Banned.'}`, 
+                    variant:response.data.user_profile.user.is_active ? 'success': 'danger', 
+                    id: Date.now() })
+            })
+            .catch(function (error) {
+                console.error(error)
+            })
+            .finally(function () {
+                //..
+            });
+    }
+
+    const handleExonereeTierChange = (tier: number) => {
+        axiosBaseURL.post("exoneree_management_api/exoneree_management/change_tier/", { profile_id: user?.id, tier: tier }, getConfig())
+            .then(function (response) {
+                //this response.data obj does return the added history note - since we navigate away not grabbing but its avail
+                update_callback(response.data.user_profile, 
+                    { message: `Changed ${user?.user.first_name} Tier to: ${tier} From: ${user?.user_tier}`, 
+                    variant: 'success', 
+                    id: Date.now() })
+            })
+            .catch(function (error) {
+
+            })
+            .finally(function () {
+
+            });
+    }
 
     return (
         <Card className="shadow" style={{ minHeight: '80vh' }}>
-            {props.user ? (
+            {user ? (
                 <>
                     <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}>
                         <div className="d-flex justify-content-end align-items-center">
-                            <Tippy content={props.user.user.is_active ? `Ban ${props.user.user.first_name}` : `Re-Activate ${props.user.user.first_name}`} delay={[250, 100]} placement="bottom">
+                            <Tippy content={user.user.is_active ? `Ban ${user.user.first_name}` : `Re-Activate ${user.user.first_name}`} delay={[250, 100]} placement="bottom">
                                 <Button
+                                    onClick={() => handleExonereeActive(user?.user.is_active ? 'inactivate' : 'activate')}
                                     style={{ minWidth: '5rem', marginRight: '.5rem' }}
                                     size='sm'
-                                    variant={props.user.user.is_active ? 'outline-danger' : 'outline-success'}
+                                    variant={user.user.is_active ? 'outline-danger' : 'outline-success'}
                                 >
-                                    {props.user.user.is_active ? 'Ban' : 'Activate'}
+                                    {user.user.is_active ? 'Ban' : 'Activate'}
                                 </Button>
                             </Tippy>
-                            {props.user.user.is_active &&
+                            {user.user.is_active &&
                                 <Dropdown as={ButtonGroup}>
-                                    <Tippy content={`Change ${props.user.user.first_name}'s Tier.`} delay={[250, 100]} placement="bottom">
+                                    <Tippy content={`Change ${user.user.first_name}'s Tier.`} delay={[250, 100]} placement="bottom">
                                         <Button style={{ minWidth: '5rem' }} variant="outline-primary" size='sm'>Tier</Button>
                                     </Tippy>
 
@@ -81,7 +115,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                                         {
                                             tiersArray.map(function (tier) {
                                                 return (
-                                                    <Dropdown.Item onClick={() => { }} key={tier}>{`Tier: ${tier}`}</Dropdown.Item>
+                                                    <Dropdown.Item disabled={tier === user.user_tier ? true : false} onClick={() => handleExonereeTierChange(tier)} key={tier}>{`Tier: ${tier}`}</Dropdown.Item>
                                                 )
                                             })
                                         }
@@ -98,7 +132,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                                         <Form.Label htmlFor="disabledTextInput">First Name</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder={props.user.user.first_name}
+                                            placeholder={user.user.first_name}
                                             aria-label="Disabled input example"
                                             disabled
                                             readOnly
@@ -110,7 +144,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                                         <Form.Label htmlFor="disabledSelect">Last Name</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder={props.user.user.last_name}
+                                            placeholder={user.user.last_name}
                                             aria-label="Disabled input example"
                                             disabled
                                             readOnly
@@ -124,7 +158,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                                         <Form.Label htmlFor="disabledSelect">Username</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder={props.user.user.username}
+                                            placeholder={user.user.username}
                                             aria-label="Disabled input example"
                                             disabled
                                             readOnly
@@ -136,7 +170,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                                         <Form.Label htmlFor="disabledTextInput">Tier</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            placeholder={`${props.user.user_tier}`}
+                                            placeholder={`${user.user_tier}`}
                                             aria-label="Disabled input example"
                                             disabled
                                             readOnly
@@ -155,7 +189,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = (props) => {
                             <>
                                 <div className="d-flex justify-content-between align-items-center mb-2 mt-2">
                                     <span className="badge bg-secondary">
-                                       {totalNotes === 0 ? 0 : startIndex + 1} - {endIndex} of {totalNotes}
+                                        {totalNotes === 0 ? 0 : startIndex + 1} - {endIndex} of {totalNotes}
                                     </span>
 
                                     <div className="d-flex align-items-center gap-2">
