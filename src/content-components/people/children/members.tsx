@@ -15,7 +15,6 @@ export const Members = () => {
     };
 
     const handleUpdate = (member: ChapterMember | null, alert: AlertInfo) => {
-        console.log('handle update users.tsx')
         setUpdatedMember(member)
         setAlert(alert)
         handleToggle(null)

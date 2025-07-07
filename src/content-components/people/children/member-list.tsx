@@ -24,7 +24,6 @@ export function MemberList({
         axiosBaseURL
             .get(`organization_api/member_management/get_chapter_members/?chapter_reltn=${sessionManager.getChapterID()}`, getConfig())
             .then((response) => {
-                console.log(response.data)
                 setMembers(response.data)
             })
             .catch((error) => {

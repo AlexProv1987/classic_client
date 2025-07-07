@@ -16,8 +16,7 @@ interface UserFlyOutProps {
 }
 
 export const MemberFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_callback, member }: UserFlyOutProps) => {
-
-    console.log(member)
+    
     const handleExonereeActive = (action: "inactivate" | "activate") => {
        
     }

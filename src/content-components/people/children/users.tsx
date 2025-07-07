@@ -16,7 +16,6 @@ export const Users: React.FC = () => {
     };
 
     const handleUpdate = (user: UserProfile | null, alert: AlertInfo) => {
-        console.log('handle update users.tsx')
         setUpdatedUser(user)
         setAlert(alert)
         handleToggle(null)

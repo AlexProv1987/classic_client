@@ -29,8 +29,6 @@ export function AddMember({
             try {
                 const options = await memberPermissionUtil.getGroupOptions();
                 const fullfillerOptions = await memberPermissionUtil.getFulfillerOptions();
-                console.log(options)
-                console.log(fullfillerOptions)
                 setGroupOptions(options);
                 setFullfillerOptions(fullfillerOptions)
             } catch (err) {

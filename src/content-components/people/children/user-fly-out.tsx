@@ -55,7 +55,6 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_cal
     const handleExonereeActive = (action: "inactivate" | "activate") => {
         axiosBaseURL.post("exoneree_management_api/exoneree_management/manage_exoneree_status/", { profile_id: user?.id, action: action }, getConfig())
             .then(function (response) {
-                console.log(response.data)
                 //this response.data obj does return the added history note - since we navigate away not grabbing but its avail
                 update_callback(response.data.user_profile, 
                     { message: `${user?.user.first_name} has been ${response.data.user_profile.user.is_active ? 'Re-Activated' : 'Banned.'}`, 

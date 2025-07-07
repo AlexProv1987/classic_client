@@ -16,7 +16,6 @@ export const PendingMembersList: React.FC = () => {
         axiosBaseURL
             .get(`member_token_api/member_tokens/pending_members/?chapter_reltn=${sessionManager.getChapterID()}`, getConfig())
             .then((response) => {
-                console.log(response.data)
                 setPendingMembers(response.data)
             })
             .catch((error) => {
