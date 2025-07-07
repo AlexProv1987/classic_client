@@ -10,3 +10,8 @@ export interface AlertInfo {
   variant: AlertVariant;
   id:number,
 }
+
+export interface MultiSelectOption {
+    value: string;
+    label: string;
+}

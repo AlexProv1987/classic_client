@@ -47,9 +47,13 @@ class SessionManager {
     return this.getSession()?.chapter_data.fullfillment_roles || [];
   }
 
-  getFullfillerIDbyType(roleType:string):string | null {
+  getFullfillerIDbyType(roleType: string): string | null {
     const match = this.getFullfillmentRoles().find(f => f.fullfilemt_role_type === roleType);
     return match ? match.id : null;
+  }
+
+  hasGroupExactly(key:string):boolean {
+      return this.getSession()?.user?.groups.includes(key) || false
   }
 
   hasFullfillmentRole(key: string): boolean {
@@ -57,9 +61,9 @@ class SessionManager {
     return roleArr.some(role => role.fullfilemt_role_type === key);
   }
 
-  getLogo():string{
-    return this.getSession()?.chapter_data?.chapter?.chapter_logo || 
-    this.getSession()?.organization?.org_logo || ''
+  getLogo(): string {
+    return this.getSession()?.chapter_data?.chapter?.chapter_logo ||
+      this.getSession()?.organization?.org_logo || ''
   }
 
   hasSession(): boolean {
