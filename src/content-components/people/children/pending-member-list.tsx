@@ -23,9 +23,9 @@ export function PendingMembersList({
                 setPendingMembers(response.data)
             })
             .catch((error) => {
-                alert('error')
+                //..
             }).finally(() => {
-
+                //..
             })
     }, [])
 

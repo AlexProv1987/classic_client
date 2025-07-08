@@ -1,3 +1,6 @@
+import { JSX } from "react";
+import { PeopleContent } from "./types";
+
 export interface Person{
     id:number,
     username:string,
@@ -34,4 +37,11 @@ export interface UserHist {
     action: string,
     note: string
     [key: string]: any;
+}
+
+export interface PeopleNavItem {
+    key: PeopleContent;
+    icon: JSX.Element;
+    label: string;
+    requiredGroups: string[];
 }

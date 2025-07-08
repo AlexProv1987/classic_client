@@ -185,7 +185,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_cal
                         ) : userHist.length === 0 ? (
                             <p className="text-muted text-center mt-3">No history found.</p>
                         ) : (
-                            <>
+                            <div>
                                 <div className="d-flex justify-content-between align-items-center mb-2 mt-2">
                                     <span className="badge bg-secondary">
                                         {totalNotes === 0 ? 0 : startIndex + 1} - {endIndex} of {totalNotes}
@@ -220,7 +220,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_cal
                                         </Card.Body>
                                     </Card>
                                 ))}
-                            </>
+                            </div>
                         )}
                     </Card.Body>
                     <Card.Footer className="secondary-nav" style={{ minHeight: '3rem' }}>
