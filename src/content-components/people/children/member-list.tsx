@@ -48,7 +48,7 @@ export function MemberList({
         <PersonTableCard
             title={Config.MEMBER_TYPE_PLURAL}
             data={members}
-            itemsPerPage={3}
+            itemsPerPage={10}
             searchBy={(member, term) =>
                 member.user_reltn.last_name.toLowerCase().startsWith(term.toLowerCase())
             }

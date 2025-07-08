@@ -30,9 +30,9 @@ export function PendingMembersList({
     }, [])
 
     useEffect(() => {
-        if (added_member) {
-            setPendingMembers([added_member, ...(pendingMembers || [])])
-        }
+        if (!added_member) return;
+        setPendingMembers([added_member, ...(pendingMembers || [])])
+
     }, [added_member])
 
     const getPendingTime = (createdString: string): number => {

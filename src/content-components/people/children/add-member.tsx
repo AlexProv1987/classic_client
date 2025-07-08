@@ -52,7 +52,6 @@ const getInitialFormData = (): FormField[] => [
     },
 ];
 
-
 interface AddMemberProps {
     updated_future_members: (member: PendingMember | null, alert: AlertInfo) => void
 }
@@ -118,16 +117,14 @@ export function AddMember({
             <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}>
                 <div className="d-flex justify-content-end align-items-center">
                     {!isAdding &&
-                        <Tippy content={`Add a ${Config.FUTURE_MEMBER_TYPE_SINGLE}`} delay={[250, 100]} placement="bottom">
-                            <Button
-                                onClick={() => setIsAdding(true)}
-                                style={{ minWidth: '5rem', marginRight: '.5rem' }}
-                                size='sm'
-                                variant='outline-success'
-                            >
-                                {`Add ${Config.FUTURE_MEMBER_TYPE_SINGLE}`}
-                            </Button>
-                        </Tippy>
+                        <Button
+                            onClick={() => setIsAdding(true)}
+                            style={{ minWidth: '5rem', marginRight: '.5rem' }}
+                            size='sm'
+                            variant='outline-primary'
+                        >
+                            {`Add ${Config.FUTURE_MEMBER_TYPE_SINGLE}`}
+                        </Button>
                     }
                 </div>
             </Card.Header>

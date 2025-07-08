@@ -15,27 +15,8 @@ class MemberPermissionUtil {
             .get('organization_api/member_management/chapter_role_opts/', getConfig())
             .then((response) => {
                 const { group_options, available_fullfillment_types } = response.data;
-
-                this.groupOptions = group_options
-                    .filter((g: any) => {
-                        if (g.name === 'chapter_manager' && sessionManager.hasGroupExactly('chapter_manager')) {
-                            return false;
-                        }
-                        if(g.name === 'chapter_member' || g.name === 'report_view'){
-                            return false;
-                        }
-                        return true;
-                    })
-                    .map((g: any): MultiSelectOption => ({
-                        value: g.name,
-                        label: this.snakeToTitle(g.name),
-                    }));
-
-                this.fulfillerOptions = available_fullfillment_types.map((f: any): MultiSelectOption => ({
-                    value: f.type_value,
-                    label: f.type
-                }));
-
+                this.groupOptions = this.mapGroupOpts(group_options)
+                this.fulfillerOptions = this.mapFullfillerOpts(available_fullfillment_types)
                 this.loaded = true;
             })
             .catch((err) => {
@@ -59,6 +40,34 @@ class MemberPermissionUtil {
         return this.fulfillerOptions || [];
     }
 
+    mapGroupOpts(arr: any[]): MultiSelectOption[] {
+        return arr.filter((g: any) => {
+            if (g.name === 'chapter_manager' && sessionManager.hasGroupExactly('chapter_manager')) {
+                return false;
+            }
+            if (g.name === 'chapter_member' || g.name === 'report_view') {
+                return false;
+            }
+            return true;
+        }).map((g: any): MultiSelectOption => ({
+            value: g.name,
+            label: this.snakeToTitle(g.name),
+        }));
+    }
+
+    mapFullfillerOpts(arr: any[]): MultiSelectOption[] {
+        return arr.map((f: any): MultiSelectOption => ({
+            value: f.type_value,
+            label: f.type
+        }));
+    }
+
+    mapFullfillmentObjectToOpts(arr:any[]):MultiSelectOption[]{
+        return arr.map((f:any):MultiSelectOption =>({
+            value:f.fullfilemt_role_type,
+            label:f.fullfillment_role
+        }))
+    }
     snakeToTitle = (text: string): string =>
         text
             .split('_')
