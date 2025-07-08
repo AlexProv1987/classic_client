@@ -2,12 +2,9 @@ import { Button, Card, Col, Form, Row } from "react-bootstrap"
 import { ChapterMember } from "../ts/interfaces"
 import Tippy from "@tippyjs/react"
 import { AlertInfo } from "../../../common/interfaces"
-import { BouncingDotsLoader } from "../../common/bouncy-loader"
 import { NoUserSelected } from "../common/empty-selected"
 import { Config } from "../../../config"
 import { PersonBadge} from "react-bootstrap-icons"
-import { useEffect, useState } from "react"
-import { axiosBaseURL, getConfig } from "../../../https"
 
 interface UserFlyOutProps {
     handle_close: (user: ChapterMember | null) => void,

@@ -3,13 +3,14 @@ import { Button, Card, Col, Form, Row } from "react-bootstrap"
 import { PersonRaisedHand } from "react-bootstrap-icons"
 import { Config } from "../../../config"
 import { useEffect, useState } from "react"
-import { ChapterMember, FormField, PendingMember } from "../ts/interfaces"
+import { PendingMember } from "../ts/interfaces"
+import { FormField } from "../../../common/interfaces"
 import { NoUserSelected } from "../common/empty-selected"
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { AlertInfo, MultiSelectOption } from "../../../common/interfaces"
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { memberPermissionUtil } from "../utils/permissions_utils"
-import { ClsFormValidation, getFormDataForRequest } from "../utils/form_utils"
+import { ClsFormValidation, getFormDataForRequest } from "../../../utils/form_utils"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
 const getInitialFormData = (): FormField[] => [

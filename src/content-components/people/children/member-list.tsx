@@ -5,7 +5,7 @@ import { Config } from "../../../config"
 import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
-import { ChapterMember, UserProfile } from "../ts/interfaces"
+import { ChapterMember } from "../ts/interfaces"
 import { PersonTableCard } from "../common/person-table-card"
 
 interface MemberList {

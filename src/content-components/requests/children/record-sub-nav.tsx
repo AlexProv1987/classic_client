@@ -1,6 +1,4 @@
 import { ArrowLeft, ArrowLeftCircle } from "react-bootstrap-icons"
-import { RequestObject } from "../ts/interface"
-import { useRef } from "react"
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional stylin
 import { sessionManager } from "../../../utils/session-manager";

@@ -1,4 +1,4 @@
-import { FormField } from "../ts/interfaces";
+import { FormField } from "../common/interfaces";
 
 interface ValidationResult {
     valid: boolean;
