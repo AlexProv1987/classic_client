@@ -19,8 +19,8 @@ interface RequestListProps {
 }
 export const RequestList: React.FC<RequestListProps> = (props) => {
     return (
-        <Card className="shadow" style={{ minHeight: '100vh' }}>
-            <Card.Header className="d-flex justify-content-between align-items-center">
+        <Card className="rounded-0" style={{ minHeight: '100vh' }}>
+            <Card.Header className="secondary-nav d-flex justify-content-between align-items-center">
                 <TableHeader table_name="Request" />
                  <div className="d-flex justify-content-center align-items-center gap-3">
                     <Tippy content="Previous Page" delay={[250, 100]} placement="bottom">
