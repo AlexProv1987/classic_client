@@ -1,15 +1,19 @@
 import Tippy from "@tippyjs/react"
 import { Table } from "react-bootstrap"
-import { CircleFill, EyeFill, Eyeglasses, SlashCircle } from "react-bootstrap-icons"
 import { Config } from "../../../config"
 import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
-import { ChapterMember, PendingMember, UserProfile } from "../ts/interfaces"
+import { PendingMember } from "../ts/interfaces"
 import { PersonTableCard } from "../common/person-table-card"
 
+interface PendingMembersListProps {
+    added_member: PendingMember | null
+}
 
-export const PendingMembersList: React.FC = () => {
+export function PendingMembersList({
+    added_member
+}: PendingMembersListProps) {
     const [pendingMembers, setPendingMembers] = useState<PendingMember[] | null>(null)
 
     useEffect(() => {
@@ -25,6 +29,12 @@ export const PendingMembersList: React.FC = () => {
             })
     }, [])
 
+    useEffect(() => {
+        if (added_member) {
+            setPendingMembers([added_member, ...(pendingMembers || [])])
+        }
+    }, [added_member])
+
     const getPendingTime = (createdString: string): number => {
         const today = new Date();
         const created = new Date(createdString);
@@ -37,7 +47,7 @@ export const PendingMembersList: React.FC = () => {
         <PersonTableCard
             title={Config.FUTURE_MEMBER_TYPE_PLURAL}
             data={pendingMembers}
-            itemsPerPage={3}
+            itemsPerPage={10}
             searchBy={(member, term) =>
                 member.full_name.toLowerCase().startsWith(term.toLowerCase())
             }
@@ -49,7 +59,7 @@ export const PendingMembersList: React.FC = () => {
                             <th>Phone</th>
                             <th>Created</th>
                             <Tippy content="Pending time in days" delay={[250, 100]} placement="bottom">
-                            <th>Pending</th>
+                                <th>Pending</th>
                             </Tippy>
                         </tr>
                     </thead>

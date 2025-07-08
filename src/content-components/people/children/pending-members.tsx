@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChapterMember } from "../ts/interfaces";
+import { PendingMember } from "../ts/interfaces";
 import { AlertInfo } from "../../../common/interfaces";
 import { Alert, Col, Container, Row } from "react-bootstrap";
 import { PendingMembersList } from "./pending-member-list";
@@ -8,10 +8,12 @@ import { AddMember } from "./add-member";
 
 export const FutureMembers = () => {
     const [alert, setAlert] = useState<AlertInfo | null>(null)
-    const [addedMember, setAddedMember] = useState<ChapterMember | null>(null)
+    const [addedMember, setAddedMember] = useState<PendingMember | null>(null)
 
-    const handleUpdate = (member: ChapterMember | null, alert: AlertInfo) => {
-      
+    const handleUpdate = (member: PendingMember | null, alert: AlertInfo) => {
+        console.log(member)
+        setAddedMember(member)
+        setAlert(alert)
     }
 
 
@@ -37,13 +39,15 @@ export const FutureMembers = () => {
                 }
 
                 <Col md={6}>
-                    <PendingMembersList />
+                    <PendingMembersList
+                        added_member={addedMember}
+                    />
                 </Col>
                 <Col xs={6}>
                     <div>
-                       <AddMember 
-                       updated_future_members={handleUpdate}
-                       />
+                        <AddMember
+                            updated_future_members={handleUpdate}
+                        />
                     </div>
 
                 </Col>
