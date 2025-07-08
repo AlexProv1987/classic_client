@@ -175,7 +175,6 @@ export const Requests: React.FC  = () => {
                             </Alert>
                         }
                     </nav>
-                  <TableHeader table_name="Request"/>
                     <RequestList
                         records={paginatedRequests}
                         set_record={setSelectedItem}
