@@ -1,4 +1,3 @@
-import Tippy from "@tippyjs/react"
 import { Button, Card, Col, Form, Row } from "react-bootstrap"
 import { PersonRaisedHand } from "react-bootstrap-icons"
 import { Config } from "../../../config"

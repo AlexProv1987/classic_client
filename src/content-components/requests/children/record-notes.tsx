@@ -18,7 +18,7 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
     const [notes, setNotes] = useState<RequestNote[] | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [alertMsg, setAlertMsg] = useState<string | null>(null)
-    const notesPerPage = 5; // You can adjust this as needed
+    const notesPerPage = 1; // You can adjust this as needed
 
     // Calculate indices
     const totalNotes = notes?.length || 0;
@@ -72,7 +72,7 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
     };
 
     return (
-        <Container className="mb-4" style={{ minHeight: '80vh' }}>
+        <Container className="mb-4">
             {alertMsg &&
                 <Alert
                     dismissible
@@ -122,7 +122,7 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
                         {/* paginatio and cnts */}
                         <div className="d-flex justify-content-between align-items-center mb-2">
                             <span className="badge bg-secondary">
-                                {totalNotes === 0 ? 0 : startIndex + 1} - {endIndex} of {totalNotes}
+                                {totalNotes === 0 ? 0 : startIndex + 1} of {totalNotes}
                             </span>
 
                             <div className="d-flex align-items-center gap-2">

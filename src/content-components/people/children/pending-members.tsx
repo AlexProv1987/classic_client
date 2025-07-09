@@ -11,11 +11,9 @@ export const FutureMembers = () => {
     const [addedMember, setAddedMember] = useState<PendingMember | null>(null)
 
     const handleUpdate = (member: PendingMember | null, alert: AlertInfo) => {
-        console.log(member)
         setAddedMember(member)
         setAlert(alert)
     }
-
 
     return (
         <Container fluid>
@@ -51,7 +49,6 @@ export const FutureMembers = () => {
                     </div>
 
                 </Col>
-
             </Row>
         </Container>
     )

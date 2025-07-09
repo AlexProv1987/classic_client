@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
 import { UserProfile } from "../ts/interfaces"
-import { PersonTableCard } from "../common/person-table-card"
+import { TableCard } from "../../common/table-card"
 
 interface UserListProps {
     handle_selected: (user: UserProfile | null) => void,
@@ -27,7 +27,7 @@ export function UserList({
                 setUsers(response.data)
             })
             .catch((error) => {
-                alert('error')
+                //..
             }).finally(() => {
 
             })
@@ -45,7 +45,7 @@ export function UserList({
     }, [updated_user])
 
     return (
-        <PersonTableCard
+        <TableCard
             title={Config.USER_TYPE_PLURAL}
             data={users}
             itemsPerPage={10}

@@ -1,29 +1,29 @@
-import { Alert, Col, Container, Form, Row } from "react-bootstrap"
-import { Fullfiller, RequestNote, RequestObject, StatusOption } from "../ts/interface"
-import { RecordNav } from "./record-sub-nav"
-import { useEffect, useRef, useState } from "react"
+import { Card, Col, Form, Row } from "react-bootstrap";
+import { Fullfiller, RequestNote, RequestObject, StatusOption } from "../ts/interface";
+import { RecordNav } from "./record-sub-nav";
+import { useEffect, useRef, useState } from "react";
 import { RecordNotes } from "./record-notes";
 import { axiosBaseURL, getConfig } from "../../../https";
 import { sessionManager } from "../../../utils/session-manager";
 import { RequestAPIHandler } from "../utils/api-req";
-import { AlertInfo } from "../../../common/interfaces";
-
+import { NoUserSelected } from "../../common/empty-selected";
+import { ClipboardCheck } from "react-bootstrap-icons";
+import { toast } from 'react-toastify';
 interface RecordProps {
-    set_selected: () => void,
-    current: RequestObject,
-    on_update: (updated: RequestObject, alert: AlertInfo) => void,
+    current: RequestObject | null;
+    on_update: (updated: RequestObject) => void;
 }
 
-export const RecordView: React.FC<RecordProps> = (props) => {
+export function RecordView({
+    current,
+    on_update
+}: RecordProps) {
+    const [localCurrent, setLocalCurrent] = useState<RequestObject | null>(null);
+    const [note, setNote] = useState('');
+    const [fullfillers, setFullfillers] = useState<Fullfiller[]>([]);
+    const [recordNote, setRecordNote] = useState<RequestNote | null>(null);
 
-    const [localCurrent, setLocalCurrent] = useState<RequestObject>({ ...props.current });
-    const [note, setNote] = useState<string>('')
-    const [fullfillers, setFullfillers] = useState<Fullfiller[]>([])
-    const [recordNote, setRecordNote] = useState<RequestNote | null>(null)
-    const [alert, setAlert] = useState<AlertInfo | null>(null)
-
-    const previousRef = useRef<RequestObject>({ ...props.current });
-    ;
+    const previousRef = useRef<RequestObject | null>(null);
 
     const statusOpts: StatusOption[] = [
         { value: 'new', name: 'New' },
@@ -34,109 +34,108 @@ export const RecordView: React.FC<RecordProps> = (props) => {
     ];
 
     useEffect(() => {
-        const newRecord = { ...props.current };
+        if (!current) return;
+        const newRecord = { ...current };
         setLocalCurrent(newRecord);
         previousRef.current = newRecord;
-        getAvailableFulfillers()
-    }, [props.current]);
+        getAvailableFulfillers(newRecord.request_type_value);
+    }, [current]);
 
-
-    const getAvailableFulfillers = () => {
+    const getAvailableFulfillers = (requestType: string) => {
         axiosBaseURL
-            .get(`organization_api/chapter_fullfillers/get_fullfillers_by_type/?chapter_id=${sessionManager.getChapterID()}&fullfiller_type=${props.current.request_type_value}`,
-                getConfig())
-            .then((response) => {
-                setFullfillers(response.data)
-            })
-            .catch((error) => {
-                //..
-            }).finally(() => {
-                //..
-            });
-    }
+            .get(
+                `organization_api/chapter_fullfillers/get_fullfillers_by_type/?chapter_id=${sessionManager.getChapterID()}&fullfiller_type=${requestType}`,
+                getConfig()
+            )
+            .then((response) => setFullfillers(response.data))
+            .catch(() => { })
+            .finally(() => { });
+    };
 
     const handleAssignToMe = () => {
-        const fullfiller = sessionManager.getFullfillmentRoles().find(f => f.fullfilemt_role_type === localCurrent.request_type_value)
-        
-        //avoid race case by passing overriden data to handlesubmit
+        if (!localCurrent) return;
+        const fullfiller = sessionManager.getFullfillmentRoles().find(
+            f => f.fullfilemt_role_type === localCurrent.request_type_value
+        );
+
         if (fullfiller && fullfiller.id !== localCurrent.fullfiller?.id) {
             const updated = { ...localCurrent, fullfiller };
             setLocalCurrent(updated);
             handleSubmit('me', updated);
-        }else{
-            setAlert({ message: 'This is already assigned to you!', variant: 'warning', id: Date.now() })
+        } else {
+            toast.warning('This is already assigned to you')
         }
-    }
+    };
 
-    const handleSubmit = async (caller: 'update' | 'save' | 'me', overrideCurrent?: RequestObject) => {
+    const handleSubmit = async (
+        caller: 'update' | 'save' | 'me',
+        overrideCurrent?: RequestObject
+    ) => {
+        if (!localCurrent || !previousRef.current) return;
+
         const currentData = overrideCurrent || localCurrent;
-        const handler = new RequestAPIHandler(currentData, previousRef.current, { note_text: note.trim(), note_type: 'fullfiller' })
+        const handler = new RequestAPIHandler(
+            currentData,
+            previousRef.current,
+            { note_text: note.trim(), note_type: 'fullfiller' }
+        );
+
         try {
-            const response = await handler.updateRequestAPICall()
-            if (typeof (response) === 'string') {
-                setAlert({ message: response, variant: 'warning', id: Date.now() });
-            } else if (typeof (response) === 'object') {
+            const response = await handler.updateRequestAPICall();
+            if (typeof response === 'string') {
+                toast.warning(response)
+            } else if (typeof response === 'object') {
+                previousRef.current = response.request;
+                setLocalCurrent(response.request);
+                response.note && setRecordNote(response.note);
                 switch (caller) {
-                    case 'save':
                     case 'me':
-                        previousRef.current = response.request
-                        setLocalCurrent(response.request)
-                        response.note && setRecordNote(response.note)
-                        setAlert({ message: 'Request Updated!', variant: 'success', id: Date.now() })
-                        return;
+                        toast.success('Request Assigned to You!')
+                        break;
                     case 'update':
-                        props.on_update(response.request, { message: 'Request Updated', variant: 'success', id: Date.now() })
-                        return;
+                        toast.success('Request Updated!')
+                        break;
                     default:
-                        return;
+                        break;
                 }
+                on_update(response.request)
             }
         } catch {
-            setAlert({ message: 'Something went wrong', variant: 'danger', id: Date.now() })
+            toast.error('Something went wrong')
         }
-    }
+    };
 
     return (
-        <div>
-            {localCurrent &&
+        <Card className="shadow" style={{ minHeight: '80vh', maxHeight: '80vh' }}>
+            {localCurrent ? (
                 <>
-                    <RecordNav
-                        set_selected={props.set_selected}
-                        request_type_value={localCurrent.request_type_value}
-                        handle_submit={handleSubmit}
-                        handle_assign={handleAssignToMe}
-                    />
-                    <nav>
-                        {alert &&
-                            <Alert
-                                key={alert.id}
-                                dismissible
-                                variant={alert.variant}
-                                style={{
-                                    width: "100%",
-                                    zIndex: 1060,
-                                    borderRadius: 0,
-                                }}
-                            >
-                                {alert.message}
-                            </Alert>
-                        }
-                    </nav>
-                    <Container className="mt-4 mb-4">
+                    <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}>
+                        <RecordNav
+                            request_type_value={localCurrent.request_type_value}
+                            handle_submit={handleSubmit}
+                            handle_assign={handleAssignToMe}
+                        />
+                    </Card.Header>
+                    <Card.Body>
                         <Form>
                             <Row className="justify-content-md-center">
                                 <Col md={4}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label htmlFor="disabledTextInput">Status</Form.Label>
+                                        <Form.Label>Status</Form.Label>
                                         <Form.Select
                                             id="statusSelect"
                                             value={localCurrent.status}
                                             onChange={(e) => {
-                                                setLocalCurrent(prev => ({
-                                                    ...prev,
-                                                    status: e.target.value,
-                                                    get_status_display: e.target.name,
-                                                }));
+                                                const selected = statusOpts.find(opt => opt.value === e.target.value);
+                                                setLocalCurrent(prev =>
+                                                    prev
+                                                        ? {
+                                                            ...prev,
+                                                            status: selected?.value || '',
+                                                            get_status_display: selected?.name || ''
+                                                        }
+                                                        : null
+                                                );
                                             }}
                                         >
                                             {statusOpts.map((status) => (
@@ -147,29 +146,24 @@ export const RecordView: React.FC<RecordProps> = (props) => {
                                         </Form.Select>
                                     </Form.Group>
                                 </Col>
+
                                 <Col md={4}>
                                     {fullfillers.length > 0 && (
                                         <Form.Group className="mb-3">
-                                            <Form.Label htmlFor="assignedToSelect">Assigned To</Form.Label>
+                                            <Form.Label>Assigned To</Form.Label>
                                             <Form.Select
                                                 id="assignedToSelect"
                                                 value={localCurrent.fullfiller?.id || ''}
                                                 onChange={(e) => {
                                                     const selectedId = e.target.value;
-
-                                                    if (selectedId === '') {
-                                                        // Set fullfiller to null when --None-- is selected
-                                                        setLocalCurrent(prev => ({
-                                                            ...prev,
-                                                            fullfiller: null,
-                                                        }));
+                                                    if (!e.target.value) {
+                                                        setLocalCurrent(prev => prev ? { ...prev, fullfiller: null } : null);
                                                     } else {
                                                         const selected = fullfillers.find(f => f.id === selectedId);
                                                         if (selected) {
-                                                            setLocalCurrent(prev => ({
-                                                                ...prev,
-                                                                fullfiller: selected,
-                                                            }));
+                                                            setLocalCurrent(prev =>
+                                                                prev ? { ...prev, fullfiller: selected } : null
+                                                            );
                                                         }
                                                     }
                                                 }}
@@ -189,11 +183,10 @@ export const RecordView: React.FC<RecordProps> = (props) => {
                             <Row className="justify-content-md-center">
                                 <Col md={4}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label htmlFor="disabledTextInput">Type</Form.Label>
+                                        <Form.Label>Type</Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder={localCurrent.request_type}
-                                            aria-label="Disabled input example"
                                             disabled
                                             readOnly
                                         />
@@ -201,11 +194,10 @@ export const RecordView: React.FC<RecordProps> = (props) => {
                                 </Col>
                                 <Col md={4}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label htmlFor="disabledSelect">Requested For</Form.Label>
+                                        <Form.Label>Requested For</Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder={`${localCurrent.exoneree_reltn.first_name} ${localCurrent.exoneree_reltn.last_name}`}
-                                            aria-label="Disabled input example"
                                             disabled
                                             readOnly
                                         />
@@ -216,14 +208,14 @@ export const RecordView: React.FC<RecordProps> = (props) => {
                             <Row className="justify-content-md-center">
                                 <Col md={4}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label htmlFor="disabledTextInput">Created</Form.Label>
+                                        <Form.Label>Created</Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder={(() => {
+                                                if (!localCurrent.created) return '';
                                                 const [year, month, day] = localCurrent.created.split('T')[0].split('-');
                                                 return `${parseInt(month)}/${parseInt(day)}/${year}`;
                                             })()}
-                                            aria-label="Disabled input example"
                                             disabled
                                             readOnly
                                         />
@@ -231,14 +223,14 @@ export const RecordView: React.FC<RecordProps> = (props) => {
                                 </Col>
                                 <Col md={4}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label htmlFor="disabledSelect">Last Updated</Form.Label>
+                                        <Form.Label>Last Updated</Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder={(() => {
+                                                if (!localCurrent.updated) return '';
                                                 const [year, month, day] = localCurrent.updated.split('T')[0].split('-');
                                                 return `${parseInt(month)}/${parseInt(day)}/${year}`;
                                             })()}
-                                            aria-label="Disabled input example"
                                             disabled
                                             readOnly
                                         />
@@ -246,16 +238,35 @@ export const RecordView: React.FC<RecordProps> = (props) => {
                                 </Col>
                             </Row>
                         </Form>
-                    </Container>
-                    <RecordNotes
-                        record_type="request"
-                        record_id={props.current.id}
-                        note={note}
-                        note_setter={setNote}
-                        parent_note={recordNote}
-                    />
+                        {current &&
+                            <RecordNotes
+                                record_type="request"
+                                record_id={current.id}
+                                note={note}
+                                note_setter={setNote}
+                                parent_note={recordNote}
+                            />
+                        }
+                    </Card.Body>
+                    <Card.Footer className="secondary-nav" style={{ minHeight: '3rem' }}>
+                        <div className="d-flex justify-content-end align-items-center gap-2">
+                        </div>
+                    </Card.Footer>
                 </>
-            }
-        </div>
-    )
+            ) : (
+                <>
+                    <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}></Card.Header>
+                    <Card.Body className="content">
+                        <NoUserSelected
+                            message='No Request Selected.'
+                            optional_msg="Click an eye icon to view a request's details"
+                            icon={ClipboardCheck}
+                            icon_size={80}
+                        />
+                    </Card.Body>
+                    <Card.Footer className="secondary-nav" style={{ minHeight: '3rem' }}></Card.Footer>
+                </>
+            )}
+        </Card>
+    );
 }

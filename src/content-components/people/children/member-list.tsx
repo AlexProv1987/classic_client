@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
 import { ChapterMember } from "../ts/interfaces"
-import { PersonTableCard } from "../common/person-table-card"
+import { TableCard } from "../../common/table-card"
 
 interface MemberList {
     handle_selected: (user: ChapterMember | null) => void,
@@ -27,7 +27,7 @@ export function MemberList({
                 setMembers(response.data)
             })
             .catch((error) => {
-                alert('error')
+               //..
             }).finally(() => {
 
             })
@@ -45,7 +45,7 @@ export function MemberList({
     }, [updated_member])
 
     return (
-        <PersonTableCard
+        <TableCard
             title={Config.MEMBER_TYPE_PLURAL}
             data={members}
             itemsPerPage={10}

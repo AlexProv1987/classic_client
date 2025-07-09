@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
 import { PendingMember } from "../ts/interfaces"
-import { PersonTableCard } from "../common/person-table-card"
+import { TableCard } from "../../common/table-card"
 
 interface PendingMembersListProps {
     added_member: PendingMember | null
@@ -44,7 +44,7 @@ export function PendingMembersList({
     };
 
     return (
-        <PersonTableCard
+        <TableCard
             title={Config.FUTURE_MEMBER_TYPE_PLURAL}
             data={pendingMembers}
             itemsPerPage={10}

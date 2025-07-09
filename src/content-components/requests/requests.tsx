@@ -6,24 +6,19 @@ import { RequestList } from "./children/list";
 import { RecordView } from "./children/record-view";
 import { ListRequestNav } from "./children/list-sub-nav";
 import { FilterType } from "./ts/type";
-import { AlertInfo } from "../../common/interfaces";
-import { Alert } from "react-bootstrap";
-import { TableHeader } from "../common/table-header";
-
+import { Col, Container, Row } from "react-bootstrap";
 type SortableRequestField =
     | keyof RequestObject
     | 'exoneree_name'
     | 'fullfiller_name';
 
-export const Requests: React.FC  = () => {
+export const Requests: React.FC = () => {
     //state vars
-    const [currentPage, setCurrentPage] = useState(1);
     const [requestObjArr, setRequestObjArr] = useState<RequestObject[]>([]);
     const [filterType, setFilterType] = useState<FilterType>('all');
     const [selectedItem, setSelectedItem] = useState<RequestObject | null>(null);
-    const [searchQuery, setSearchQuery] = useState<string>('');
     const [sortConfig, setSortConfig] = useState<{ key: keyof RequestObject; direction: 'asc' | 'desc' } | null>(null);
-    const [alert, setAlert] = useState<AlertInfo | null>(null)
+   
     //initial hook to make request
     useEffect(() => {
         axiosBaseURL
@@ -50,22 +45,14 @@ export const Requests: React.FC  = () => {
         }
     }
 
-    //clear any stale alert and null item
-    const handleBack = () => {
-        setAlert(null);
-        setSelectedItem(null);
-    };
-
     //update the state of our object array - re sort and set our alerts and item to null
-    const handleUpdateCallback = (updated: RequestObject, alert: AlertInfo) => {
+    const handleUpdateCallback = (updated: RequestObject) => {
         setRequestObjArr(prev => {
             const updatedList = prev.map(item =>
                 item.id === updated.id ? updated : item
             );
             return sortRequests(updatedList);
         });
-        setAlert(alert)
-        setSelectedItem(null);
     };
 
     //function for sorting based on a key from the requestobject or combined vals - if you need more of these add another | string to the SortableRequestField type
@@ -124,35 +111,44 @@ export const Requests: React.FC  = () => {
     //string filter && assigned v unassigned v open
     const filteredRequests = requestObjArr
         .filter((request) => {
-            if (searchQuery.length >= 3) {
-                return (
-                    request.request_type.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-                    request.exoneree_reltn.first_name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-                    request.exoneree_reltn.last_name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-                    request.get_status_display.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-                    (request.fullfiller &&
-                        request.fullfiller.user_first_name.toLowerCase().startsWith(searchQuery.toLowerCase())) ||
-                    (request.fullfiller &&
-                        request.fullfiller.user_last_name.toLowerCase().startsWith(searchQuery.toLowerCase()))
-                );
-            }
-            return true;
-        })
-        .filter((request) => {
             if (filterType === 'with') return request.fullfiller !== null;
             if (filterType === 'without') return request.fullfiller === null;
             return true;
         });
 
-    //pagination
-    const pageSize = 25;
-    const paginatedRequests = filteredRequests.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize
-    );
-
     return (
-        <div>
+        <Container fluid>
+            <ListRequestNav
+                filter_setter={setFilterType}
+            />
+            <Row className='mt-2'>
+                {/**idk how i feel about this it boops  */}
+                <Col md={6}>
+                    <RequestList
+                        records={filteredRequests}
+                        set_record={setSelectedItem}
+                        on_sort={handleColumnSort}
+                        sort_config={sortConfig}
+                    />
+                </Col>
+                <Col xs={6}>
+                    <div>
+                        <RecordView
+                            current={selectedItem}
+                            on_update={handleUpdateCallback}
+                        />
+                    </div>
+
+                </Col>
+
+            </Row>
+        </Container>
+    )
+}
+
+/**
+ * 
+ *  <div>
             {!selectedItem ? (
                 <>
                     <ListRequestNav
@@ -176,14 +172,10 @@ export const Requests: React.FC  = () => {
                         }
                     </nav>
                     <RequestList
-                        records={paginatedRequests}
+                        records={requestObjArr}
                         set_record={setSelectedItem}
                         on_sort={handleColumnSort}
                         sort_config={sortConfig}
-                        page={currentPage}
-                        total={filteredRequests.length}
-                        page_size={pageSize}
-                        set_page={setCurrentPage}
                     />
                 </>
             ) : (
@@ -194,5 +186,4 @@ export const Requests: React.FC  = () => {
                 />
             )}
         </div>
-    )
-}
+ */

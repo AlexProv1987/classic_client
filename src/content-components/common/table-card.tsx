@@ -2,10 +2,10 @@
 import { Card } from "react-bootstrap"
 import { ArrowLeftCircle, ArrowRightCircle } from "react-bootstrap-icons"
 import { useEffect, useState, JSX } from "react"
-import { BouncingDotsLoader } from "../../common/bouncy-loader"
-import { TableHeader } from "../../common/table-header";
+import { BouncingDotsLoader } from "./bouncy-loader"
+import { TableHeader } from "./table-header";
 
-interface PaginatedTableCardProps<T> {
+interface TableCardProps<T> {
     title: string;
     data: T[] | null;
     renderTable: (data: T[]) => JSX.Element;
@@ -13,13 +13,13 @@ interface PaginatedTableCardProps<T> {
     itemsPerPage?: number;
 }
 
-export function PersonTableCard<T>({
+export function TableCard<T>({
     title,
     data,
     renderTable,
     searchBy,
     itemsPerPage = 10
-}: PaginatedTableCardProps<T>) {
+}: TableCardProps<T>) {
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState("");
 

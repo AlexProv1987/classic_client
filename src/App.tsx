@@ -6,7 +6,8 @@ import { useSessionState } from './hooks';
 import { AuthPage } from './pages/auth';
 import { Session } from './common/interfaces';
 import { GetSupport } from './components/fab';
-import { sessionManager } from './utils/session-manager';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [user, setUser] = useSessionState<Session | null>('session', null);
@@ -24,6 +25,16 @@ function App() {
       padding: 0,
       margin: 0,
     }}>
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
 
       {/*Fab*/}
       {user && <GetSupport />}
@@ -33,7 +44,7 @@ function App() {
         log_out={logOut}
         has_user={user ? true : false}
       />
-      
+
 
       {/**Main**/}
       <div className='container-fluid' style={{ flex: 1 }}>
@@ -46,7 +57,7 @@ function App() {
 
       {/**Footer**/}
       <Footer />
-    </div>
+    </div >
 
   );
 }
