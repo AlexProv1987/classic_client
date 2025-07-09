@@ -18,7 +18,7 @@ export const Requests: React.FC = () => {
     const [filterType, setFilterType] = useState<FilterType>('all');
     const [selectedItem, setSelectedItem] = useState<RequestObject | null>(null);
     const [sortConfig, setSortConfig] = useState<{ key: keyof RequestObject; direction: 'asc' | 'desc' } | null>(null);
-   
+
     //initial hook to make request
     useEffect(() => {
         axiosBaseURL
@@ -117,32 +117,33 @@ export const Requests: React.FC = () => {
         });
 
     return (
-        <Container fluid>
+        <div>
             <ListRequestNav
                 filter_setter={setFilterType}
             />
-            <Row className='mt-2'>
-                {/**idk how i feel about this it boops  */}
-                <Col md={6}>
-                    <RequestList
-                        records={filteredRequests}
-                        set_record={setSelectedItem}
-                        on_sort={handleColumnSort}
-                        sort_config={sortConfig}
-                    />
-                </Col>
-                <Col xs={6}>
-                    <div>
-                        <RecordView
-                            current={selectedItem}
-                            on_update={handleUpdateCallback}
+            <Container fluid>
+                <Row className='mt-2'>
+                    {/**idk how i feel about this it boops  */}
+                    <Col md={6}>
+                        <RequestList
+                            records={filteredRequests}
+                            set_record={setSelectedItem}
+                            on_sort={handleColumnSort}
+                            sort_config={sortConfig}
                         />
-                    </div>
+                    </Col>
+                    <Col xs={6}>
+                        <div>
+                            <RecordView
+                                current={selectedItem}
+                                on_update={handleUpdateCallback}
+                            />
+                        </div>
 
-                </Col>
-
-            </Row>
-        </Container>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     )
 }
 
