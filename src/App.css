@@ -51,6 +51,7 @@ body,
   background: linear-gradient(135deg, #f5f7fa, #e4ecf4)
 }
 
+/*pagination icons no focus on click*/
 .icon-no-focus:focus {
   outline: none;
   box-shadow: none;
@@ -104,7 +105,7 @@ body,
   }
 }
 
-
+/*Use to fade content in if desired*/
 .fade-in-up {
   opacity: 0;
   transform: translateY(8px);
@@ -116,4 +117,10 @@ body,
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/*Global toast width override*/
+.Toastify__toast {
+  min-width: 400px;
+  max-width: 600px;
 }

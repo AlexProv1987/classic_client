@@ -1,10 +1,11 @@
-import { Alert, Button, Card, Container, FloatingLabel, Form } from "react-bootstrap"
+import { Button, Card, Container, FloatingLabel, Form } from "react-bootstrap"
 import { Activity, ArrowLeftCircle, ArrowRightCircle } from "react-bootstrap-icons"
 import { axiosBaseURL, getConfig } from "../../../https";
 import { useEffect, useState } from "react";
 import { RequestNote } from "../ts/interface";
 import { BouncingDotsLoader } from "../../common/bouncy-loader";
 import Tippy from "@tippyjs/react";
+import { toast } from "react-toastify";
 
 interface RecordNotesProps {
     record_type: string,
@@ -17,7 +18,6 @@ interface RecordNotesProps {
 export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
     const [notes, setNotes] = useState<RequestNote[] | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [alertMsg, setAlertMsg] = useState<string | null>(null)
     const notesPerPage = 1; // You can adjust this as needed
 
     // Calculate indices
@@ -35,7 +35,7 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
             })
             .catch((error) => {
                 setNotes([])
-                setAlertMsg('Failed to retrieve request notes.')
+                toast.error('Failed to retrieve request notes.')
             });
 
     }, [props.record_id]);
@@ -48,16 +48,27 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
     }, [props.parent_note]);
 
     const postNote = () => {
+        //overkill
+        if (!props.note && props.note.trim() !== '') {
+            return;
+        }
+
+        //set this to whatever
+        if (props.note.trim().length <= 10) {
+            toast.warning('Note must be greater than 10 characters')
+            return;
+        }
+
         axiosBaseURL.post("request_api/request_notes/create_note/", {
             note_type: 'fullfiller', //evaluate this - manager v fullfiller etc
-            note_text: props.note,
+            note_text: props.note.trim(),
             request_id: props.record_id
         }, getConfig())
             .then(function (response) {
                 setNotes([response.data, ...(notes || [])])
                 setCurrentPage(1)
             }).catch(function (error) {
-                setAlertMsg('Failed to save request note.')
+                toast.error('Failed to save request note.')
             }).finally(function () {
                 props.note_setter('')
             });
@@ -73,22 +84,6 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
 
     return (
         <Container className="mb-4">
-            {alertMsg &&
-                <Alert
-                    dismissible
-                    variant='danger'
-                    style={{
-                        position: "fixed",
-                        top: "0",
-                        left: "0",
-                        width: "100%",
-                        zIndex: 1060,
-                        borderRadius: 0,
-                    }}
-                >
-                    {alertMsg}
-                </Alert>
-            }
             {/*note form*/}
             <div className="border-bottom mb-2">
                 <Form>
@@ -107,7 +102,8 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
                     </FloatingLabel>
                     <div className="d-flex justify-content-end mb-2">
                         <Tippy content="Send your note" delay={[250, 100]} placement="bottom">
-                            <Button onClick={() => postNote()} size="sm" variant="outline-primary">
+                            {/*prob should enforce a min length to*/}
+                            <Button disabled={props.note && props.note.trim() !== '' ? false : true} onClick={() => postNote()} size="sm" variant="outline-primary">
                                 Post
                             </Button>
                         </Tippy>
