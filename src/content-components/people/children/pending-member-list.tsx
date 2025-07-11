@@ -47,7 +47,7 @@ export function PendingMembersList({
         <TableCard
             title={Config.FUTURE_MEMBER_TYPE_PLURAL}
             data={pendingMembers}
-            itemsPerPage={10}
+            itemsPerPage={15}
             searchBy={(member, term) =>
                 member.full_name.toLowerCase().startsWith(term.toLowerCase())
             }

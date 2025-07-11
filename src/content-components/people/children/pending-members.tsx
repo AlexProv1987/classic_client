@@ -21,11 +21,9 @@ export const FutureMembers = () => {
                     />
                 </Col>
                 <Col xs={6}>
-                    <div>
                         <AddMember
                             updated_future_members={handleUpdate}
                         />
-                    </div>
                 </Col>
             </Row>
         </Container>
