@@ -7,7 +7,7 @@ import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
 import { ChapterMember } from "../ts/interfaces"
 import { TableCard } from "../../common/table-card"
-
+import { toast } from "react-toastify"
 interface MemberList {
     handle_selected: (user: ChapterMember | null) => void,
     updated_member: ChapterMember | null
@@ -27,7 +27,7 @@ export function MemberList({
                 setMembers(response.data)
             })
             .catch((error) => {
-               //..
+               toast.error('An error has occurred.')
             }).finally(() => {
 
             })

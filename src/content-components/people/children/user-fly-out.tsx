@@ -2,17 +2,17 @@ import { Button, ButtonGroup, Card, Col, Dropdown, Form, Row, Table } from "reac
 import { UserHist, UserProfile } from "../ts/interfaces"
 import { UserTiers } from "../../../common/types"
 import Tippy from "@tippyjs/react"
-import { AlertInfo } from "../../../common/interfaces"
 import { BouncingDotsLoader } from "../../common/bouncy-loader"
 import { NoUserSelected } from "../../common/empty-selected"
 import { Config } from "../../../config"
 import { Activity, ArrowLeftCircle, ArrowRightCircle, PersonFill } from "react-bootstrap-icons"
 import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
+import { toast } from "react-toastify"
 
 interface UserFlyOutProps {
     handle_close: (user: UserProfile | null) => void,
-    update_callback: (user: UserProfile | null, alert: AlertInfo) => void,
+    update_callback: (user: UserProfile | null) => void,
     user: UserProfile | null,
 }
 
@@ -56,10 +56,8 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_cal
         axiosBaseURL.post("exoneree_management_api/exoneree_management/manage_exoneree_status/", { profile_id: user?.id, action: action }, getConfig())
             .then(function (response) {
                 //this response.data obj does return the added history note - since we navigate away not grabbing but its avail
-                update_callback(response.data.user_profile, 
-                    { message: `${user?.user.first_name} has been ${response.data.user_profile.user.is_active ? 'Re-Activated' : 'Banned.'}`, 
-                    variant:response.data.user_profile.user.is_active ? 'success': 'danger', 
-                    id: Date.now() })
+                update_callback(response.data.user_profile)
+                toast.success(`${user?.user.first_name} has been ${response.data.user_profile.user.is_active ? 'Re-Activated' : 'Banned.'}`)
             })
             .catch(function (error) {
                 console.error(error)
@@ -73,10 +71,8 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_cal
         axiosBaseURL.post("exoneree_management_api/exoneree_management/change_tier/", { profile_id: user?.id, tier: tier }, getConfig())
             .then(function (response) {
                 //this response.data obj does return the added history note - since we navigate away not grabbing but its avail
-                update_callback(response.data.user_profile, 
-                    { message: `Changed ${user?.user.first_name} Tier to: ${tier} From: ${user?.user_tier}`, 
-                    variant: 'success', 
-                    id: Date.now() })
+                update_callback(response.data.user_profile)
+                toast.success(`Changed ${user?.user.first_name} Tier to: ${tier} From: ${user?.user_tier}`)
             })
             .catch(function (error) {
 

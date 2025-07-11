@@ -6,12 +6,14 @@ import { PendingMember } from "../ts/interfaces"
 import { FormField } from "../../../common/interfaces"
 import { NoUserSelected } from "../../common/empty-selected"
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { AlertInfo, MultiSelectOption } from "../../../common/interfaces"
+import { MultiSelectOption } from "../../../common/interfaces"
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { memberPermissionUtil } from "../utils/permissions_utils"
 import { ClsFormValidation, getFormDataForRequest } from "../../../utils/form_utils"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
+import { toast } from "react-toastify"
+
 const getInitialFormData = (): FormField[] => [
     {
         label: 'Full Name',
@@ -52,7 +54,7 @@ const getInitialFormData = (): FormField[] => [
 ];
 
 interface AddMemberProps {
-    updated_future_members: (member: PendingMember | null, alert: AlertInfo) => void
+    updated_future_members: (member: PendingMember | null) => void
 }
 
 export function AddMember({
@@ -91,12 +93,14 @@ export function AddMember({
                 fullfiller_records: selectedFullfillerOptions.map(item => item.value),
             }, getConfig())
                 .then(function (response) {
-                    updated_future_members(response.data, { message: `${Config.FUTURE_MEMBER_TYPE_SINGLE} token created.`, variant: 'success', id: Date.now() })
+                    toast.success(`${Config.FUTURE_MEMBER_TYPE_SINGLE} token created.`)
+                    updated_future_members(response.data)
                     setFormData(getInitialFormData());
                     setSelectedGroups([]);
                     setSelectedFullfillerOptions([]);
                 }).catch(function (error) {
-                    updated_future_members(null, { message: error.response.data.message ? error.response.data.message : `Failed to send ${Config.FUTURE_MEMBER_TYPE_SINGLE} token`, variant: 'danger', id: Date.now() })
+                    toast.error(error.response.data.message ? error.response.data.message : `Failed to send ${Config.FUTURE_MEMBER_TYPE_SINGLE} token`)
+                    updated_future_members(null)
                 }).finally(() => {
                     //..
                 })

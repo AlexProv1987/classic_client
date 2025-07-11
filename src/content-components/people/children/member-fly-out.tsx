@@ -1,7 +1,7 @@
-import { Button, Card, Col, Form, Row } from "react-bootstrap"
+import { Card, Col, Form, Row } from "react-bootstrap"
 import { ChapterMember } from "../ts/interfaces"
 import Tippy from "@tippyjs/react"
-import { AlertInfo, MultiSelectOption } from "../../../common/interfaces"
+import { MultiSelectOption } from "../../../common/interfaces"
 import { NoUserSelected } from "../../common/empty-selected"
 import { Config } from "../../../config"
 import { PersonBadge } from "react-bootstrap-icons"
@@ -9,11 +9,11 @@ import { useEffect, useRef, useState } from "react"
 import { memberPermissionUtil } from "../utils/permissions_utils"
 import { Typeahead } from "react-bootstrap-typeahead"
 import { axiosBaseURL, getConfig } from "../../../https"
-import { sessionManager } from "../../../utils/session-manager"
+import { toast } from "react-toastify"
 
 interface UserFlyOutProps {
     handle_close: (user: ChapterMember | null) => void,
-    update_callback: (user: ChapterMember | null, alert: AlertInfo) => void,
+    update_callback: (user: ChapterMember | null) => void,
     member: ChapterMember | null,
 }
 
@@ -53,7 +53,7 @@ export const MemberFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_c
                 setSelectedFullfillerOptions(currFullfill)
             })
             .catch((error) => {
-                console.error(error);
+                toast.error('Error has occurred fetching data.');
             }).finally(() => {
                 //..some loading thing here
             })

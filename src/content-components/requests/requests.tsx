@@ -45,7 +45,7 @@ export const Requests: React.FC = () => {
         }
     }
 
-    //update the state of our object array - re sort and set our alerts and item to null
+    //update the state of our object array - re sort
     const handleUpdateCallback = (updated: RequestObject) => {
         setRequestObjArr(prev => {
             const updatedList = prev.map(item =>
@@ -146,45 +146,3 @@ export const Requests: React.FC = () => {
         </div>
     )
 }
-
-/**
- * 
- *  <div>
-            {!selectedItem ? (
-                <>
-                    <ListRequestNav
-                        filter_setter={setFilterType}
-                        search_setter={setSearchQuery}
-                    />
-                    <nav>
-                        {alert &&
-                            <Alert
-                                key={alert.id}
-                                dismissible
-                                variant={alert.variant}
-                                style={{
-                                    width: "100%",
-                                    zIndex: 1060,
-                                    borderRadius: 0,
-                                }}
-                            >
-                                {alert.message}
-                            </Alert>
-                        }
-                    </nav>
-                    <RequestList
-                        records={requestObjArr}
-                        set_record={setSelectedItem}
-                        on_sort={handleColumnSort}
-                        sort_config={sortConfig}
-                    />
-                </>
-            ) : (
-                <RecordView
-                    set_selected={handleBack}
-                    current={selectedItem}
-                    on_update={handleUpdateCallback}
-                />
-            )}
-        </div>
- */

@@ -1,13 +1,11 @@
 import { useRef, useState } from "react"
-import { Alert, Button, Form, Modal, ModalBody, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, Form, Modal, ModalBody, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ChatText, InfoCircle } from "react-bootstrap-icons";
 import './css/fab.css'
 import Tippy from "@tippyjs/react";
 export const GetSupport: React.FC = () => {
 
     const [show, setShow] = useState<boolean>(false)
-    const [alertMsg, setAlertMsg] = useState<string | null>(null)
-    const [alertVariant, setAlertVariant] = useState<string>('success')
     const [comment, setComment] = useState<string>("")
 
     const didSubmit = useRef<boolean>(false)
@@ -15,27 +13,10 @@ export const GetSupport: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         //..make your request here
-        //acess to alert msg and a variant based on good or bad
     };
 
     return (
         <div>
-            {alertMsg &&
-                <Alert
-                    dismissible
-                    variant={alertVariant}
-                    style={{
-                        position: "fixed",
-                        top: "0",
-                        left: "0",
-                        width: "100%",
-                        zIndex: 1060,
-                        borderRadius: 0,
-                    }}
-                >
-                    {alertMsg}
-                </Alert>
-            }
             <Tippy showOnCreate content="Contact Support" delay={[250, 100]} placement="bottom">
                     <Button
                         title="Contact Support"

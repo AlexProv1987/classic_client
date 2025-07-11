@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { axiosBaseURL, getConfig } from "../../https";
 import { sessionManager } from "../../utils/session-manager";
 import { BouncingDotsLoader } from "../common/bouncy-loader";
+import { toast } from 'react-toastify';
 
 export const Home = () => {
     const [homeContent, setHomeContent] = useState<string | null>(null)
-    const [alertMsg, setAlertMsg] = useState<string>('')
 
     useEffect(() => {
         axiosBaseURL
@@ -15,7 +15,7 @@ export const Home = () => {
                 setHomeContent(response.data.news_letter)
             })
             .catch((error) => {
-                setAlertMsg('There was an issue retrieving your content')
+                toast.error('There was an issue retrieving your content')
             }).finally(() => {
                 //..
             });
@@ -23,19 +23,13 @@ export const Home = () => {
 
     return (
         <div>
-            {alertMsg &&
-                <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    {alertMsg}
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            }
             {homeContent ? (<iframe
                 title="GoogleDoc"
                 sandbox=""
                 style={{ border: 'none', width: '100%', height: '100vh',}}
                 srcDoc={homeContent} />
             ) : (
-                !alertMsg && <BouncingDotsLoader vh='50' />
+                <BouncingDotsLoader vh='100' />
             )}
         </div>
     )
