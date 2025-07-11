@@ -9,14 +9,20 @@ import { Activity, ArrowLeftCircle, ArrowRightCircle, PersonFill } from "react-b
 import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { toast } from "react-toastify"
+import { actionMapArr } from "../ts/constants"
+
+const getHistAction = (action:string):string =>{
+   const label = actionMapArr.find(f=>f.name===action)
+   return label?.label || ''
+}
+
 
 interface UserFlyOutProps {
-    handle_close: (user: UserProfile | null) => void,
     update_callback: (user: UserProfile | null) => void,
     user: UserProfile | null,
 }
 
-export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_callback, user }: UserFlyOutProps) => {
+export const UserFlyOut: React.FC<UserFlyOutProps> = ({ update_callback, user }: UserFlyOutProps) => {
     const [userHist, setUserHist] = useState<UserHist[] | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -207,12 +213,12 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ handle_close, update_cal
                                     </div>
                                 </div>
                                 {curretHist.map((hist, index) => (
-                                    <Card className="mb-2">
+                                    <Card key={index} className="mb-2">
                                         <Card.Header>
                                             {hist.created_by_first_name} {hist.created_by_last_name} - {hist.created.split('T')[0]}
                                         </Card.Header>
                                         <Card.Body>
-                                            <Card.Text><span className="me-2"><Activity size={20} color='red' /></span>{hist.action}</Card.Text>
+                                            <Card.Text><span className="me-2"><Activity size={20} color='red' /></span>{getHistAction(hist.action)}</Card.Text>
                                         </Card.Body>
                                     </Card>
                                 ))}

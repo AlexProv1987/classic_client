@@ -14,7 +14,7 @@ export const Users: React.FC = () => {
 
     const handleUpdate = (user: UserProfile | null) => {
         setUpdatedUser(user)
-        handleToggle(null)
+        setSelectedUser(user)
     }
 
     return (
@@ -29,7 +29,6 @@ export const Users: React.FC = () => {
                 <Col xs={6}>
                     <div>
                         <UserFlyOut
-                            handle_close={handleToggle}
                             user={selectedUser}
                             update_callback={handleUpdate}
                         />

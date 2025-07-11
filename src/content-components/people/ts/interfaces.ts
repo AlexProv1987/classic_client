@@ -45,3 +45,8 @@ export interface PeopleNavItem {
     label: string;
     requiredGroups: string[];
 }
+
+export interface ActionMap {
+    label:string,
+    name:string,
+}
