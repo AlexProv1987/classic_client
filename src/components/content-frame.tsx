@@ -30,7 +30,7 @@ export const ContentFrame: React.FC<ContentFrameProps> = (props) => {
     };
 
     return (
-        <div>
+        <div style={{flex:1,minHeight:'100vh'}}>
             {renderView()}
         </div>
     )

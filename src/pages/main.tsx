@@ -1,29 +1,51 @@
-import { useState } from "react"
-import { ContentFrame } from "../components/content-frame"
-import { NavFrame } from "../components/nav-frame"
-import { ContentOpts } from "../common/types"
+import { useState } from "react";
+import { ContentOpts } from "../common/types";
+import { NavFrame } from "../components/nav-frame";
+import { ContentFrame } from "../components/content-frame";
+import { ChevronRight, PersonArmsUp } from "react-bootstrap-icons";
+import { NavBar } from "../components/nav";
 
-//we will check mobile here and instead make a callback to populate the nav bar - maybe i kinda wanna do desktop/tablet only
 export const Main: React.FC = () => {
-    //DONT FORGET TO CHANGE THIS BACK
-    const [currentContent,setCurrentContect] = useState<ContentOpts>('people')
+    const [currentContent, setCurrentContent] = useState<ContentOpts>("people");
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     return (
-        <div className='row'>
+        <div className="d-flex">
+            <NavFrame
+                set_content={setCurrentContent}
+                collapsed={sidebarCollapsed}
+                toggleCollapsed={() => setSidebarCollapsed(!sidebarCollapsed)}
+            />
 
-            {/**Nav Frame**/}
-            <div className='col col-md-2 sidebar'>
-                <NavFrame 
-                set_content={setCurrentContect}
-                />
-            </div>
+            {sidebarCollapsed && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: "20px",
+                        left: "0px",
+                        zIndex: 1050,
+                        backgroundColor: "#343a40",
+                        padding: "6px 8px",
+                        borderTopRightRadius: "4px",
+                        borderBottomRightRadius: "4px",
+                        cursor: "pointer",
+                    }}
+                    onClick={() => setSidebarCollapsed(false)}
+                >
+                    <ChevronRight size={20} color="white" />
+                </div>
+            )}
 
-            {/**Content Frame**/}
-            <div className='col col-md-10 p-0 content' >
-                <ContentFrame 
-                value={currentContent}
-                />
+            <div
+                className="content-area"
+                style={{
+                    flexGrow: 1,
+                    marginLeft: sidebarCollapsed ? "0" : "250px",
+                    transition: "margin-left 0.4s ease",
+                }}
+            >
+                <ContentFrame value={currentContent} />
             </div>
         </div>
-    )
+    );
 }

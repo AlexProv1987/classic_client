@@ -123,7 +123,6 @@ export const Requests: React.FC = () => {
             />
             <Container fluid>
                 <Row className='mt-2'>
-                    {/**idk how i feel about this it boops  */}
                     <Col md={6}>
                         <RequestList
                             records={filteredRequests}

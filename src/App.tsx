@@ -45,9 +45,8 @@ function App() {
         has_user={user ? true : false}
       />
 
-
       {/**Main**/}
-      <div className='container-fluid' style={{ flex: 1 }}>
+      <div className='container-fluid' style={{ flex: 1, paddingRight: '0', paddingLeft: '0' }}>
         {user ?
           <Main /> :
           <AuthPage

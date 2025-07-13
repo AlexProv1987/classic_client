@@ -7,7 +7,7 @@ interface ListRequestNavProps {
 export const ListRequestNav: React.FC<ListRequestNavProps> = (props) => {
  
     return (
-        <nav className="navbar navbar-expand-lg secondary-nav">
+        <nav className="navbar navbar-expand-lg secondary-nav pr-0 pl-0 me-0 ms-0">
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item">
