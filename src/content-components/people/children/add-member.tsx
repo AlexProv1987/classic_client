@@ -119,7 +119,7 @@ export function AddMember({
         <Card className="shadow" style={{ minHeight: '85vh' }}>
             <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}>
                 <div className="d-flex justify-content-end align-items-center">
-                    {!isAdding &&
+                    {!isAdding ? (
                         <Button
                             onClick={() => setIsAdding(true)}
                             style={{ minWidth: '5rem', marginRight: '.5rem' }}
@@ -128,6 +128,17 @@ export function AddMember({
                         >
                             {`Add ${Config.FUTURE_MEMBER_TYPE_SINGLE}`}
                         </Button>
+                    ) :
+                        (
+                            <Button
+                                onClick={() => handleSave()}
+                                style={{ minWidth: '5rem', marginRight: '.5rem' }}
+                                size='sm'
+                                variant='outline-primary'
+                            >
+                                Send
+                            </Button>
+                        )
                     }
                 </div>
             </Card.Header>
@@ -164,13 +175,6 @@ export function AddMember({
                             onChange={(selected) => setSelectedFullfillerOptions(selected as MultiSelectOption[])}
                             placeholder="Select fullfillment roles..."
                         />
-                        <Row className="pt-4 justify-content-center">
-                            <Col md={6} className="text-center">
-                                <Button className="w-100" variant="outline-primary" size="sm" onClick={() => handleSave()}>
-                                    Submit
-                                </Button>
-                            </Col>
-                        </Row>
                     </Form>
                 ) :
                     (
