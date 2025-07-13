@@ -39,13 +39,6 @@ export interface UserHist {
     [key: string]: any;
 }
 
-export interface PeopleNavItem {
-    key: PeopleContent;
-    icon: JSX.Element;
-    label: string;
-    requiredGroups: string[];
-}
-
 export interface ActionMap {
     label:string,
     name:string,

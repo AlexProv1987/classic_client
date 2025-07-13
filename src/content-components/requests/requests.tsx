@@ -4,7 +4,7 @@ import { axiosBaseURL, getConfig } from "../../https";
 import { RequestObject } from "./ts/interface";
 import { RequestList } from "./children/list";
 import { RecordView } from "./children/record-view";
-import { ListRequestNav } from "./children/list-sub-nav";
+import { RequestSubNav } from "./children/sub-nav";
 import { FilterType } from "./ts/type";
 import { Col, Container, Row } from "react-bootstrap";
 type SortableRequestField =
@@ -118,7 +118,7 @@ export const Requests: React.FC = () => {
 
     return (
         <div>
-            <ListRequestNav
+            <RequestSubNav
                 filter_setter={setFilterType}
             />
             <Container fluid>

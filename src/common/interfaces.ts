@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 export interface Session {
   //lazy
   [key: string]: any;
@@ -19,4 +21,11 @@ export interface FormField {
   min_length:number,
   max_length:number,
   [key: string]: any;
+}
+
+export interface NavItem<T = string> {
+    key: T;
+    icon: JSX.Element;
+    label: string;
+    requiredGroups: string[];
 }
