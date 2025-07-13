@@ -27,13 +27,10 @@ export const Users: React.FC = () => {
                     />
                 </Col>
                 <Col xs={6}>
-                    <div>
                         <UserFlyOut
                             user={selectedUser}
                             update_callback={handleUpdate}
                         />
-                    </div>
-
                 </Col>
             </Row>
         </Container>

@@ -3,6 +3,7 @@ import { ContentOpts } from "../common/types"
 import { Home } from "../content-components/home/home";
 import { Requests } from "../content-components/requests/requests";
 import { People } from "../content-components/people/people";
+import { Contacts } from "../content-components/contacts/contacts";
 
 interface ContentFrameProps {
     value: ContentOpts,
@@ -21,7 +22,7 @@ export const ContentFrame: React.FC<ContentFrameProps> = (props) => {
             case 'knowledge':
                 return null;
             case 'contacts':
-                return null;
+                return <Contacts />;
             case 'portal':
                 return null;
             default:

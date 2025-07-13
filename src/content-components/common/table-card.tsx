@@ -42,7 +42,7 @@ export function TableCard<T>({
     };
 
     return (
-        <Card className="shadow" style={{ minHeight: '85vh', maxHeight:'85vh'}}>
+        <Card className="shadow" style={{ minHeight: '85vh', maxHeight: '85vh' }}>
             <Card.Header className="secondary-nav d-flex justify-content-between align-items-center">
                 <TableHeader table_name={title} />
                 <input
@@ -54,9 +54,14 @@ export function TableCard<T>({
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </Card.Header>
-            <Card.Body className="content px-0 pt-0 pb-0" style={{overflowY:'scroll'}}>
+            <Card.Body className="content px-0 pt-0 pb-0" style={{ overflowY: 'scroll' }}>
                 {data === null ? (
-                    <BouncingDotsLoader vh="25" />
+                    <div
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ height: '100%', minHeight: '200px' }}
+                    >
+                        <BouncingDotsLoader vh="25" />
+                    </div>
                 ) : filtered.length === 0 ? (
                     <p className="text-muted text-center mt-3">No matching records found.</p>
                 ) : (
