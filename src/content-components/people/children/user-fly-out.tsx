@@ -89,7 +89,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ update_callback, user }:
     }
 
     return (
-        <Card className="shadow" style={{ minHeight: '80vh' }}>
+        <Card className="shadow" style={{ minHeight: '85vh' }}>
             {user ? (
                 <>
                     <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}>

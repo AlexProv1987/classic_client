@@ -106,7 +106,7 @@ export function RecordView({
     };
 
     return (
-        <Card className="shadow" style={{ minHeight: '80vh', maxHeight: '80vh' }}>
+        <Card className="shadow" style={{ minHeight: '85vh', maxHeight: '85vh' }}>
             {localCurrent ? (
                 <>
                     <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}>

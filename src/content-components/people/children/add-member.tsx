@@ -116,7 +116,7 @@ export function AddMember({
     };
 
     return (
-        <Card className="shadow" style={{ minHeight: '80vh' }}>
+        <Card className="shadow" style={{ minHeight: '85vh' }}>
             <Card.Header className="secondary-nav" style={{ minHeight: '3.5rem' }}>
                 <div className="d-flex justify-content-end align-items-center">
                     {!isAdding &&

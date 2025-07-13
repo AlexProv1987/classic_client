@@ -42,7 +42,7 @@ export function TableCard<T>({
     };
 
     return (
-        <Card className="shadow" style={{ minHeight: '80vh', maxHeight:'80vh'}}>
+        <Card className="shadow" style={{ minHeight: '85vh', maxHeight:'85vh'}}>
             <Card.Header className="secondary-nav d-flex justify-content-between align-items-center">
                 <TableHeader table_name={title} />
                 <input
