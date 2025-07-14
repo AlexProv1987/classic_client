@@ -154,7 +154,8 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
                                         }
                                     </span>
                                 </Card.Header>
-                                <Card.Body style={{ height: '125px', maxHeight: '125px', overflowY: 'auto' }}>
+                                {/*This is fucky on tablet extending outside of the card */}
+                                <Card.Body style={{ minHeight: '80px', maxHeight: '80px', overflowY: 'auto' }}>
                                     <Card.Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                                         <span className="me-2"><Activity size={20} color='red' /></span>{note.note_text}
                                     </Card.Text>

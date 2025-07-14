@@ -237,16 +237,16 @@ export function RecordView({
                                     </Form.Group>
                                 </Col>
                             </Row>
+                            {current &&
+                                <RecordNotes
+                                    record_type="request"
+                                    record_id={current.id}
+                                    note={note}
+                                    note_setter={setNote}
+                                    parent_note={recordNote}
+                                />
+                            }
                         </Form>
-                        {current &&
-                            <RecordNotes
-                                record_type="request"
-                                record_id={current.id}
-                                note={note}
-                                note_setter={setNote}
-                                parent_note={recordNote}
-                            />
-                        }
                     </Card.Body>
                     <Card.Footer className="secondary-nav" style={{ minHeight: '3rem' }}>
                         <div className="d-flex justify-content-end align-items-center gap-2">
