@@ -93,7 +93,7 @@ export function AddMember({
                 fullfiller_records: selectedFullfillerOptions.map(item => item.value),
             }, getConfig())
                 .then(function (response) {
-                    toast.success(`${Config.FUTURE_MEMBER_TYPE_SINGLE} token created.`)
+                    toast.success(`${Config.MEMBER_TYPE_SINGLE} invite sent.`)
                     updated_future_members(response.data)
                     setFormData(getInitialFormData());
                     setSelectedGroups([]);
