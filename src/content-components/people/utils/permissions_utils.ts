@@ -68,12 +68,12 @@ class MemberPermissionUtil {
             label:f.fullfillment_role
         }))
     }
+
     snakeToTitle = (text: string): string =>
         text
             .split('_')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ');
-
 
     invalidateCache() {
         this.loaded = false;
