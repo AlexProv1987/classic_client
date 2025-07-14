@@ -95,8 +95,9 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
                         <Form.Control
                             value={props.note}
                             onChange={(e) => props.note_setter(e.target.value)}
-                            style={{ height: '100px' }}
+                            style={{ minHeight: '100px', maxHeight: '100px', textWrap: 'wrap' }}
                             as="textarea"
+                            maxLength={500}
                             placeholder="Leave a comment here"
                         />
                     </FloatingLabel>
@@ -153,8 +154,10 @@ export const RecordNotes: React.FC<RecordNotesProps> = (props) => {
                                         }
                                     </span>
                                 </Card.Header>
-                                <Card.Body>
-                                    <Card.Text><span className="me-2"><Activity size={20} color='red' /></span>{note.note_text}</Card.Text>
+                                <Card.Body style={{ height: '125px', maxHeight: '125px', overflowY: 'auto' }}>
+                                    <Card.Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                                        <span className="me-2"><Activity size={20} color='red' /></span>{note.note_text}
+                                    </Card.Text>
                                 </Card.Body>
                             </Card>
                         ))}
