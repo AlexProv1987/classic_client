@@ -7,6 +7,7 @@ import { sessionManager } from "../../../utils/session-manager"
 import { TableCard } from "../../common/table-card"
 import { KnowledgeBase } from "../ts/interfaces"
 import { kbUtils } from "../utils/kb_utils"
+import { Messages } from "../../../config"
 
 interface KnowledgeBaseListProps {
 
@@ -89,9 +90,9 @@ export function KnowledgeBaseList({
                         </Modal.Header>
                         <Modal.Body>
                             {pendingActionRef.current === 'activate' ? (
-                                <h6 className='text-warning'>**Reactivating a knowledge base will reactivate all its articles.**</h6>
+                                <h6 className='text-warning'>{Messages.INACTIVATE_KB}</h6>
                             ) : (
-                                <h6 className='text-danger'>**Inactivating a knowledge base will inactivate all its articles.**</h6>
+                                <h6 className='text-danger'>{Messages.REACTIVATE_KB}</h6>
                             )}
                         </Modal.Body>
                         <Modal.Footer>

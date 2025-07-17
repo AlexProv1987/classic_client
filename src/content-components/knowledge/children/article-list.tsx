@@ -105,9 +105,9 @@ export function ArticleList({
                             </Modal.Header>
                             <Modal.Body>
                                 {pendingActionRef.current === 'activate' ? (
-                                    <h6 className='text-warning'>{Messages.REACTIVATE_KB}</h6>
+                                    <h6 className='text-warning'>{Messages.INACTIVATE_ARTICLE}</h6>
                                 ) : (
-                                    <h6 className='text-danger'>{Messages.INACTIVATE_KB}</h6>
+                                    <h6 className='text-danger'>{Messages.REACTIVATE_ARTICLE}</h6>
                                 )}
                             </Modal.Body>
                             <Modal.Footer>

@@ -4,16 +4,16 @@ import { UserTiers } from "../../../common/types"
 import Tippy from "@tippyjs/react"
 import { BouncingDotsLoader } from "../../common/bouncy-loader"
 import { NoUserSelected } from "../../common/empty-selected"
-import { Config } from "../../../config"
+import { Config, ToastMessages } from "../../../config"
 import { Activity, ArrowLeftCircle, ArrowRightCircle, PersonFill } from "react-bootstrap-icons"
 import { useEffect, useState } from "react"
 import { axiosBaseURL, getConfig } from "../../../https"
 import { toast } from "react-toastify"
 import { actionMapArr } from "../ts/constants"
 
-const getHistAction = (action:string):string =>{
-   const label = actionMapArr.find(f=>f.name===action)
-   return label?.label || ''
+const getHistAction = (action: string): string => {
+    const label = actionMapArr.find(f => f.name === action)
+    return label?.label || ''
 }
 
 
@@ -78,7 +78,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ update_callback, user }:
             .then(function (response) {
                 //this response.data obj does return the added history note - since we navigate away not grabbing but its avail
                 update_callback(response.data.user_profile)
-                toast.success(`Changed ${user?.user.first_name} Tier to: ${tier} From: ${user?.user_tier}`)
+                toast.success(ToastMessages.TIER_UP(user?.user.first_name, tier, user?.user_tier))
             })
             .catch(function (error) {
 
@@ -236,7 +236,7 @@ export const UserFlyOut: React.FC<UserFlyOutProps> = ({ update_callback, user }:
                     <Card.Body className="content">
                         <NoUserSelected
                             message={`No ${Config.USER_TYPE_SINGLE} Selected`}
-                            optional_msg="Click an eye icon to view user details"
+                            optional_msg={`Click an eye icon to view ${Config.USER_TYPE_SINGLE} details`}
                             icon={PersonFill}
                             icon_size={80}
                         />
