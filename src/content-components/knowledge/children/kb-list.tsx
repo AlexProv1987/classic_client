@@ -6,6 +6,7 @@ import { axiosBaseURL, getConfig } from "../../../https"
 import { sessionManager } from "../../../utils/session-manager"
 import { TableCard } from "../../common/table-card"
 import { KnowledgeBase } from "../ts/interfaces"
+import { kbUtils } from "../utils/kb_utils"
 
 interface KnowledgeBaseListProps {
 
@@ -20,14 +21,15 @@ export function KnowledgeBaseList({
     const pendingKbIdRef = useRef<string | null>(null);
 
     useEffect(() => {
-        axiosBaseURL
-            .get(`knowledge_api/knowledge_base/get_chapter_kbs/?chapter_reltn=${sessionManager.getChapterID()}`, getConfig())
-            .then((response) => {
-                setKnowledgeBases(response.data)
-            })
-            .catch((error) => {
-                console.error(error);
-            })
+        const loadKnowledgeBases = async () => {
+            try {
+                const kbs = await kbUtils.getKnowledgeBases();
+                setKnowledgeBases(kbs)
+            } catch (err) {
+                console.error("Failed to load Knwledge Articles options", err);
+            }
+        };
+        loadKnowledgeBases();
     }, []);
 
     const handleToggleKB = (kbId: string, newStatus: boolean) => {
@@ -42,6 +44,7 @@ export function KnowledgeBaseList({
     }
 
     return (
+
         <TableCard
             title='Knowledge Base'
             data={knowledgeBases}

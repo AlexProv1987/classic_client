@@ -11,3 +11,8 @@ export type ManagingType =
   | typeof Config['USER_TYPE_PLURAL']
   | typeof Config['MEMBER_TYPE_PLURAL']
   | typeof Config['FUTURE_MEMBER_TYPE_PLURAL'];
+
+export const Messages = {
+  INACTIVATE_KB: '**Inactivating a knowledge base will inactivate all its articles.**',
+  REACTIVATE_KB: '**Reactivating a knowledge base will reactivate all its articles.**',
+}as const

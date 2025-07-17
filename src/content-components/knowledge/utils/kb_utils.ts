@@ -1,5 +1,6 @@
 import { MultiSelectOption } from "../../../common/interfaces";
 import { axiosBaseURL, getConfig } from "../../../https";
+import { sessionManager } from "../../../utils/session-manager";
 import { KnowledgeBase } from "../ts/interfaces";
 
 class KBUtils {
@@ -11,7 +12,7 @@ class KBUtils {
         if (this.loaded || this.loading) return this.loading ?? Promise.resolve();
 
         this.loading = axiosBaseURL
-            .get('contact_api/chapter_contacts/contact_types/', getConfig())
+            .get(`knowledge_api/knowledge_base/get_chapter_kbs/?chapter_reltn=${sessionManager.getChapterID()}`, getConfig())
             .then((response) => {
                 this.knowledeBases = response.data
                 this.loaded = true;
