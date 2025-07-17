@@ -4,6 +4,7 @@ import { Home } from "../content-components/home/home";
 import { Requests } from "../content-components/requests/requests";
 import { People } from "../content-components/people/people";
 import { Contacts } from "../content-components/contacts/contacts";
+import { Knowledge } from "../content-components/knowledge/knowledge";
 
 interface ContentFrameProps {
     value: ContentOpts,
@@ -20,7 +21,7 @@ export const ContentFrame: React.FC<ContentFrameProps> = (props) => {
             case 'people':
                 return <People/>;
             case 'knowledge':
-                return null;
+                return <Knowledge />;
             case 'contacts':
                 return <Contacts />;
             case 'portal':

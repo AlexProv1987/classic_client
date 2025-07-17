@@ -6,7 +6,7 @@ import { ChevronRight, PersonArmsUp } from "react-bootstrap-icons";
 import { NavBar } from "../components/nav";
 
 export const Main: React.FC = () => {
-    const [currentContent, setCurrentContent] = useState<ContentOpts>("contacts");
+    const [currentContent, setCurrentContent] = useState<ContentOpts>("knowledge");
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     return (

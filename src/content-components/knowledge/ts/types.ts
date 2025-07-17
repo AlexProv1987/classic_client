@@ -1,0 +1,1 @@
+export type KnowledgeContent = 'kb' | 'kb_articles' | 'add_knowledge_base_article'
